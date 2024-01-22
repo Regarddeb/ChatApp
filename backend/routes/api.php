@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(UserController::class)->prefix('user')->group(function () {
-    Route::post('store', 'store');
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
+    Route::post('store', 'store')->name('store');
+    Route::post('login', 'login')->name('login');
+    Route::post('logout', 'logout')->name('logout');
 });

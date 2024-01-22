@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
+import axios from '@utilities/axios';
 
 import Container from "@components/layouts/Container";
 import SignupMessage from '@components/misc/SignupMessage';
@@ -32,7 +32,13 @@ export default function Signup() {
 
     const SignupSubmit: SubmitHandler<FormValues> = data => {
         if (schema.parse(data)) {
-            console.log('data valid')
+            axios.post('api/user/store', data)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
 

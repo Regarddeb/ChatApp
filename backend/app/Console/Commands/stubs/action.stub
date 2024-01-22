@@ -1,0 +1,11 @@
+<?php
+
+namespace DummyNamespace;
+
+class {{ className }}
+{
+    public function execute()
+    {
+        // Your action logic here
+    }
+}

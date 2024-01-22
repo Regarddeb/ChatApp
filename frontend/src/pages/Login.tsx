@@ -11,6 +11,7 @@ import Container from "@components/layouts/Container";
 import Slogan from '@components/misc/Slogan';
 import Front from '@components/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
+import axios from '@utilities/axios'
 
 export default function Login() {
     const [, setUser] = useAtom(userAtom);
@@ -34,7 +35,13 @@ export default function Login() {
 
     const handleLoginSubmit: SubmitHandler<FormValues> = data => {
         if (loginSchema.parse(data)) {
-            console.log(data);
+            axios.post('api/user/login', data)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
 

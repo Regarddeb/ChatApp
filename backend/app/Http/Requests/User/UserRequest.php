@@ -11,7 +11,7 @@ class UserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Set to true for simplicity. Adjust based on your authentication logic.
+        return true; 
     }
 
     /**
@@ -31,7 +31,7 @@ class UserRequest extends FormRequest
     /**
      * Get custom messages for validator errors.
      *
-     * @return array<string, string>
+     * @return array<string, string>    
      */
     public function messages(): array
     {
