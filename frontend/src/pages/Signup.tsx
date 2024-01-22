@@ -1,16 +1,20 @@
-// import React from 'react';
 import { IconAt, IconLock, IconUser } from '@tabler/icons-react';
-import { Input, PasswordInput, Button } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Input, PasswordInput, Button, Overlay } from '@mantine/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from '@utilities/axios';
+import { useMutation } from 'react-query';
+import Lottie from 'lottie-react';
 
+import axios from '@utilities/axios';
+import { useAtom } from 'jotai';
 import Container from "@components/layouts/Container";
 import SignupMessage from '@components/misc/SignupMessage';
 import Front from '@components/misc/Front';
-
+import { userAtom } from '@atoms/userAtoms';
+import loadingAnimation from '@assets/animations/loadingAnimation.json';
+import Toast from '@components/feedback/Toast';
 
 const schema = z.object({
     username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -25,25 +29,65 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function Signup() {
+    const [, setUser] = useAtom(userAtom);
+    const navigate = useNavigate();
 
-    const { handleSubmit, formState: { errors }, control } = useForm<FormValues>({
-        resolver: zodResolver(schema)
+    const { handleSubmit, formState: { errors }, control, setError } = useForm<FormValues>({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            username: '',
+            email: '',
+            password: '',
+            password_confirmation: '',
+        }
     });
 
-    const SignupSubmit: SubmitHandler<FormValues> = data => {
-        if (schema.parse(data)) {
-            axios.post('api/user/store', data)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+    const mutation = useMutation(
+        (data: FormValues) => axios.post('api/user/store', schema.parse(data)),
+        {
+            onSuccess: (res) => {
+                const { token, user } = res.data.userData.original;
+                setUser((prev) => ({
+                    ...prev,
+                    token: token ?? prev.token,
+                    username: user?.username ?? prev.username,
+                    email: user?.email ?? prev.email,
+                }));
+                Toast({ icon: 'success', title: 'Signed in successfully' });
+                navigate('/chat');
+            },
+            onError: (err: any) => {
+                if (axios.isAxiosError(err) && err.response?.status === 422) {
+                    setError('email', {
+                        type: 'manual',
+                        message: err.response.data.message,
+                    });
+                } else {
+                    Toast({ icon: 'error', title: 'Something went wrong' });
+                    console.error('An error occurred:', err.message);
+                }
+            },
         }
-    }
+    );
+
+    const SignupSubmit: SubmitHandler<FormValues> = (data) => {
+        mutation.mutate(data);
+    };
 
     return (
         <Container>
+            {mutation.isLoading && (
+                <Overlay color="#000" backgroundOpacity={0.35} blur={4} className='flex items-center justify-center'>
+                    <div className="h-28 w-28 p-3 bg-white bg-opacity rounded-lg">
+                        <Lottie
+                            animationData={loadingAnimation}
+                            loop
+                            autoplay
+                        />
+                    </div>
+                </Overlay>
+            )}
+
             <div className="flex justify-between items-center overflow-auto w-full p-2 mt-2">
                 <div className="w-5/12 h-full flex flex-col space-y-7">
 
@@ -62,7 +106,6 @@ export default function Signup() {
                                         className="w-8/12"
                                         leftSection={<IconUser size={16} />}
                                         aria-label="Username"
-
                                         {...field}
                                         error={!!errors.username}
                                     />
@@ -81,7 +124,6 @@ export default function Signup() {
                                         className="w-8/12"
                                         leftSection={<IconAt size={16} />}
                                         aria-label="Email"
-
                                         {...field}
                                         error={!!errors.email}
                                     />
@@ -100,7 +142,6 @@ export default function Signup() {
                                         leftSection={<IconLock size={16} />}
                                         className="w-8/12"
                                         aria-label='Password'
-
                                         {...field}
                                         error={!!errors.password}
                                     />
@@ -119,7 +160,6 @@ export default function Signup() {
                                         leftSection={<IconLock size={16} />}
                                         className="w-8/12"
                                         aria-label='Password Confirmation'
-
                                         {...field}
                                         error={!!errors.password_confirmation}
                                     />
@@ -127,17 +167,16 @@ export default function Signup() {
                             )}
                         />
 
-
                         <Button
                             variant="filled"
                             className='bg-primary w-8/12 active:ring-2 active:ring-primary hover:bg-opacity-90 ring-offset-2'
                             radius="md"
                             type='submit'
+                            loading={mutation.isLoading}
+                            disabled={mutation.isLoading}
                         >
                             Signup
                         </Button>
-
-
 
                         <Link to='/' className='w-8/12'>
                             <Button
@@ -158,5 +197,5 @@ export default function Signup() {
 
             </div>
         </Container>
-    )
+    );
 }

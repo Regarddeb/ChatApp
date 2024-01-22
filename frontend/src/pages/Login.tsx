@@ -37,7 +37,13 @@ export default function Login() {
         if (loginSchema.parse(data)) {
             axios.post('api/user/login', data)
                 .then(res => {
-                    console.log(res)
+                    console.log(res);
+                    // setUser((prev) => ({
+                    //     ...prev,
+                    //     token: '',
+                    //     username: '',
+                    //     email: '',
+                    // }))
                 })
                 .catch(err => {
                     console.log(err)
