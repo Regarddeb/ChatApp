@@ -1,11 +1,11 @@
 import { IconAt, IconLock, IconUser } from '@tabler/icons-react';
-import { Input, PasswordInput, Button, Overlay } from '@mantine/core';
+import { Input, PasswordInput, Button } from '@mantine/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
-import Lottie from 'lottie-react';
+
 
 import axios from '@utilities/axios';
 import { useAtom } from 'jotai';
@@ -13,8 +13,8 @@ import Container from "@components/layouts/Container";
 import SignupMessage from '@components/misc/SignupMessage';
 import Front from '@components/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
-import loadingAnimation from '@assets/animations/loadingAnimation.json';
 import Toast from '@components/feedback/Toast';
+import { LoadingOverlay } from '@components/loader/LoadingOverlay';
 
 const schema = z.object({
     username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -77,17 +77,9 @@ export default function Signup() {
     return (
         <Container>
             {mutation.isLoading && (
-                <Overlay color="#000" backgroundOpacity={0.35} blur={4} className='flex items-center justify-center'>
-                    <div className="h-28 w-28 p-3 bg-white bg-opacity rounded-lg">
-                        <Lottie
-                            animationData={loadingAnimation}
-                            loop
-                            autoplay
-                        />
-                    </div>
-                </Overlay>
+                <LoadingOverlay />
             )}
-
+            
             <div className="flex justify-between items-center overflow-auto w-full p-2 mt-2">
                 <div className="w-5/12 h-full flex flex-col space-y-7">
 

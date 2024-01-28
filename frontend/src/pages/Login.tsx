@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
-
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import Toast from '@components/feedback/Toast';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 import Container from "@components/layouts/Container";
@@ -15,6 +17,7 @@ import axios from '@utilities/axios'
 
 export default function Login() {
     const [, setUser] = useAtom(userAtom);
+    const navigate = useNavigate();
 
     const loginSchema = z.object({
         email_username: z.string(),
@@ -33,22 +36,30 @@ export default function Login() {
         }
     });
 
-    const handleLoginSubmit: SubmitHandler<FormValues> = data => {
-        if (loginSchema.parse(data)) {
-            axios.post('api/user/login', data)
-                .then(res => {
-                    console.log(res);
-                    // setUser((prev) => ({
-                    //     ...prev,
-                    //     token: '',
-                    //     username: '',
-                    //     email: '',
-                    // }))
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+    const mutation = useMutation(
+        (data: FormValues) => axios.post('api/user/login', loginSchema.parse(data)),
+        {
+            onSuccess: (res) => {
+                console.log(res)
+                const { token, user } = res.data.user.original;
+                setUser((prev) => ({
+                    ...prev,
+                    token: token ?? prev.token,
+                    username: user?.username ?? prev.username,
+                    email: user?.email ?? prev.email,
+                }));
+                Toast({ icon: 'success', title: 'Signed in successfully' });
+                navigate('/chat');
+            },
+            onError: (err: any) => {
+                Toast({ icon: 'error', title: 'Something went wrong' });
+                console.error('An error occurred:', err.message);
+            }
         }
+    );
+
+    const handleLoginSubmit: SubmitHandler<FormValues> = data => {
+        mutation.mutate(data);
     }
 
     return (
