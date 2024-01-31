@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Toast from '@components/feedback/Toast';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
+import { LoadingOverlay } from '@components/loader/LoadingOverlay';
 import Container from "@components/layouts/Container";
 import Slogan from '@components/misc/Slogan';
 import Front from '@components/misc/Front';
@@ -52,7 +53,13 @@ export default function Login() {
                 navigate('/chat');
             },
             onError: (err: any) => {
-                Toast({ icon: 'error', title: 'Something went wrong' });
+                if (axios.isAxiosError(err) && err.response?.status === 422) { 
+                    Toast({ icon: 'error', title: err.response.data.message });
+                } else if (axios.isAxiosError(err) && err.response?.status === 401) {
+                    Toast({ icon: 'error', title: err.response.data.error });
+                } else {
+                    Toast({ icon: 'error', title: 'Something went wrong' });
+                }
                 console.error('An error occurred:', err.message);
             }
         }
@@ -64,6 +71,9 @@ export default function Login() {
 
     return (
         <Container>
+            {mutation.isLoading && (
+                <LoadingOverlay />
+            )}
             <div className="flex justify-between items-center overflow-auto w-full p-2 mt-2">
                 <div className="w-5/12 h-full flex flex-col space-y-7">
 
