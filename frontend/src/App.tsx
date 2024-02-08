@@ -12,11 +12,15 @@ const Signup = lazy(() => import('@pages/Signup'));
 const Chat = lazy(() => import('@pages/Chat'));
 
 const App: FunctionComponent = () => {
-  const [user] = useAtom(userAtom);
+  // const [user] = useAtom(userAtom);
   // const token = user.token;
 
   // const Protected = ({path, element}) => {
-
+  //   if(token){
+  //     return element;
+  // }else{
+  // return <Login />
+  //   }
   // }
 
   return (
