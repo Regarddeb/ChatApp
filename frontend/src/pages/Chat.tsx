@@ -1,10 +1,11 @@
+import { IconMessage, IconDots } from "@tabler/icons-react";
+import { Input } from "@mantine/core";
+
 import Container from "@components/layouts/Container";
 import Header from "@components/layouts/Header";
-import { Input } from "@mantine/core";
 import { ChatInstance } from "@components/layouts/chat_list/ChatInstance";
-
-import { IconMessage } from "@tabler/icons-react";
-import { IconDots } from "@tabler/icons-react";
+import { InputArea } from "@components/layouts/input_area/InputArea";
+import { ChatArea } from "@components/layouts/chat_area/ChatAre";
 
 const numberOfChatInstances = 10;
 
@@ -38,22 +39,22 @@ export default function Chat() {
 
                 {/* chat area */}
                 <div className="w-6/12 flex flex-col border-r">
+
                     <div className="py-2 shadow-sm flex items-center justify-between px-2">
                         <div className="flex space-x-3">
                             <div className="rounded-full w-[35px] h-[35px] bg-gray-200"></div>
                             <p className="flex flex-col items-start">
-                                <span className="text-sm font-medium">User name sample</span>
+                                <span className="text-sm font-medium opacity-80">User name sample</span>
                                 <span className="text-xs font-light opacity-70">Active 12 min ago</span>
                             </p>
                         </div>
                         <button className="p-1 rounded-full hover:bg-gray-100 bg-opacity-60 transition-colors duration-300"><IconDots /></button>
                     </div>
-                    <div className="w-full h-full bg-green-100 overflow-y-auto flex flex-col-reverse">
 
-                    </div>
-                    <div className="w-full p-2">
-                        <Input variant="filled" placeholder="Enter your message here..." />
-                    </div>
+                    <ChatArea />
+
+                    <InputArea />
+
                 </div>
 
                 {/* menu */}

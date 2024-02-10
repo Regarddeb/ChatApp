@@ -14,9 +14,10 @@ export default {
         extrabold: ["extrabold"],
       },
       colors: {
-        primary: '#7a84ba',
-        background: '#F7F3EB'
-      }
+        primary: "#7a84ba",
+        background: "#F7F3EB",
+        secondary: '#F2F0FF'
+      },
     },
   },
   plugins: [],
