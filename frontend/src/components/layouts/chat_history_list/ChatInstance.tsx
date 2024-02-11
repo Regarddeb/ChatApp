@@ -1,9 +1,10 @@
 import React from 'react';
 import { IconDotsVertical } from "@tabler/icons-react";
+import { IconButton } from '@components/button/IconButton';
 
 export const ChatInstance: React.FC = () => {
     return (
-        <div className="w-full hover:bg-gray-50 hover:bg-opacity-80 hover:shadow-sm group hover:cursor-pointer p-2 flex items-center rounded-md">
+        <div className="w-full hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md">
 
             <div className="w-2/12">
                 <div className="bg-gray-100 rounded-full w-[50px] h-[48px]">
@@ -20,7 +21,7 @@ export const ChatInstance: React.FC = () => {
             </div>
 
             <div className="w-1/12 pt-1 hidden group-hover:flex group-hover:pr-2.5">
-                <button className="p-1 mr-[-10px] hover:bg-gray-100 h-fit rounded-full group-hover:border"><IconDotsVertical size={18} style={{ opacity: 0.7 }} /></button>
+                <IconButton icon={<IconDotsVertical size={18} style={{ opacity: 0.7 }} />} className='group-hover:border p-1 mr-[-10px] hover:bg-white' />
             </div>
 
         </div>

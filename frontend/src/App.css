@@ -90,3 +90,7 @@
 *::-webkit-scrollbar-thumb:active {
   background-color: #626a95;
 }
+
+.outgoing {
+  background: linear-gradient(170deg, rgb(113, 122, 173), rgb(90, 87, 148));
+}
