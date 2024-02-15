@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Actions;
+namespace App\Http\Actions\User;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthUserAction
@@ -25,4 +23,6 @@ class AuthUserAction
         // Authentication failed
         return null;
     }
+
+    
 }

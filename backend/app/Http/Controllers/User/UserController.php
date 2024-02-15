@@ -10,8 +10,8 @@ use Exception;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\LoginRequest;
 
-use App\Http\Actions\StoreUserAction;
-use App\Http\Actions\AuthUserAction;
+use App\Http\Actions\User\StoreUserAction;
+use App\Http\Actions\User\AuthUserAction;
 
 class UserController extends Controller
 {

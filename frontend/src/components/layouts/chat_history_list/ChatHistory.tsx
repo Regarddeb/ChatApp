@@ -5,6 +5,7 @@ import { IconSquarePlus, IconSearch, IconArrowLeft } from "@tabler/icons-react";
 import { ChatInstance } from "./ChatInstance";
 import { searchHistoryActiveAtom } from '@atoms/menuAtoms';
 import { IconButton } from '@components/button/IconButton';
+import { SearchList } from './SearchList';
 import { useAtom } from 'jotai';
 
 const numberOfChatInstances = 10;
@@ -42,11 +43,13 @@ export const ChatHistory: React.FC = () => {
                 <Input onFocus={handleSearchFocus} placeholder="Search chat history" variant="filled" className='w-full' leftSection={<IconSearch size={19} />} />
             </div>
 
-            <div className="w-full pr-2 flex-col space-y-2 overflow-y-auto">
+            <div className={`w-full flex-col space-y-2 overflow-y-auto ${searchHistoryActive ? '' : 'pr-2'}`}>
                 {!searchHistoryActive ?
-                    (chatInstances) :
-                    (<>
-                    </>)
+                    (
+                        chatInstances
+                    ) : (
+                        <SearchList />
+                    )
                 }
             </div>
         </>

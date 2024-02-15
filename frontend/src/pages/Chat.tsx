@@ -42,8 +42,10 @@ export default function Chat() {
 
                 </div>
 
-                {/* menu */}
-                <div className="w-3/12 h-full"></div>
+                {/* chatmate info */}
+                <div className="w-3/12 h-full">
+
+                </div>
             </div>
         </Container>
     )

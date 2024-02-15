@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Actions;
+namespace App\Http\Actions\User;
 
 use App\Models\User;
 use App\Http\Resources\UserResource;
-use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Http\JsonResponse;
 use Exception;
 
