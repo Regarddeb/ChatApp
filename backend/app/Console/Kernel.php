@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\MakeActionCommand;
+use App\Console\Commands\MakeTraitCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         MakeActionCommand::class,
+        MakeTraitCommand::class,
     ];
 
     protected function commands(): void

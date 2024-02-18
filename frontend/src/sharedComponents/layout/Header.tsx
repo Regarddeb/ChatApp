@@ -1,4 +1,4 @@
-import Logo from "@components/misc/Logo";
+import Logo from "@sharedComponents/misc/Logo";
 
 const Header = () => {
     return (

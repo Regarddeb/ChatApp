@@ -17,6 +17,7 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@utilities": path.resolve(__dirname, "src/utilities"),
       "@atoms": path.resolve(__dirname, "src/atoms"),
+      "@sharedComponents": path.resolve(__dirname, "src/sharedComponents")
     },
   },
 });

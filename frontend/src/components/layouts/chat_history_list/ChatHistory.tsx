@@ -8,7 +8,7 @@ import { IconButton } from '@components/button/IconButton';
 import { SearchList } from './SearchList';
 import { useAtom } from 'jotai';
 
-const numberOfChatInstances = 10;
+const numberOfChatInstances = 5;
 
 export const ChatHistory: React.FC = () => {
     const [searchHistoryActive, setSearchHistoryActive] = useAtom(searchHistoryActiveAtom);
@@ -43,7 +43,7 @@ export const ChatHistory: React.FC = () => {
                 <Input onFocus={handleSearchFocus} placeholder="Search chat history" variant="filled" className='w-full' leftSection={<IconSearch size={19} />} />
             </div>
 
-            <div className={`w-full flex-col space-y-2 overflow-y-auto ${searchHistoryActive ? '' : 'pr-2'}`}>
+            <div className={`w-full flex-col space-y-2 overflow-y-auto ${searchHistoryActive ? '' : 'pr-0'}`}>
                 {!searchHistoryActive ?
                     (
                         chatInstances

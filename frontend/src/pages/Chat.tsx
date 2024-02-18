@@ -1,14 +1,18 @@
 import { IconDots } from "@tabler/icons-react";
 
-import Container from "@layouts/Container";
-import Header from "@layouts/Header";
+import Container from "@sharedComponents/layout/Container";
+import Header from "@sharedComponents/layout/Header";
 import { InputArea } from "@layouts/input_area/InputArea";
 import { ChatArea } from "@layouts/chat_area/ChatArea";
 import { ChatHistory } from "@layouts/chat_history_list/ChatHistory";
 import { IconButton } from "@components/button/IconButton";
-import { Sidemenu } from "@components/misc/Sidemenu";
+import { Sidemenu } from "@sharedComponents/layout/Sidemenu";
+import { UserList } from "@components/layouts/user_list/UserList";
+import { currentTabAtom } from "@atoms/menuAtoms";
+import { useAtom } from "jotai";
 
 export default function Chat() {
+    const [currentTab] = useAtom(currentTabAtom);
 
     return (
         <Container>
@@ -19,7 +23,8 @@ export default function Chat() {
 
                 {/* chatlist */}
                 <div className="w-3/12 flex flex-col border-r p-2 space-y-3 h-full">
-                    <ChatHistory />
+                    {currentTab === 'chat_history' && <ChatHistory />}
+                    {currentTab === 'user_list' && <UserList />}
                 </div>
 
                 {/* chat area */}

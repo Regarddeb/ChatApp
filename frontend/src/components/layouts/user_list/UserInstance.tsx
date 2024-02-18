@@ -8,7 +8,7 @@ export const UserInstance: React.FC = () => {
                 <div className="rounded-full bg-gray-300 w-[40px] h-[40px]"></div>
             </div>
             <div className="w-full flex flex-col space-y-1 truncate text-ellipsis px-2">
-                <p className="text-sm font-medium text-gray-800 opacity-70 group-hover:opacity-100 text-start">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo dolorum, nobis, sapiente sint facilis aliquid beatae sunt at esse quis voluptatum doloribus ut ipsa maxime cupiditate placeat deserunt excepturi hic.</p>
+                <p className="text-sm text-gray-800 opacity-80 group-hover:opacity-90 text-start">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo dolorum, nobis, sapiente sint facilis aliquid beatae sunt at esse quis voluptatum doloribus ut ipsa maxime cupiditate placeat deserunt excepturi hic.</p>
                 <p className="text-xs opacity-70 font-light text-start">Active 20 min ago</p>
             </div>
             <div className="w-1/12">

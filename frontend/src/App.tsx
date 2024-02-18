@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import { useAtom } from 'jotai';
 
 import { userAtom } from '@atoms/userAtoms';
-import { Loader } from '@components/loader/PageLoading';
+import { Loader } from '@sharedComponents/loader/PageLoading';
 
 const Login = lazy(() => import('@pages/Login'));
 const Signup = lazy(() => import('@pages/Signup'));

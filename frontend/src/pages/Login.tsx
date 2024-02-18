@@ -9,10 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import Toast from '@components/feedback/Toast';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
-import { LoadingOverlay } from '@components/loader/LoadingOverlay';
-import Container from "@components/layouts/Container";
-import Slogan from '@components/misc/Slogan';
-import Front from '@components/misc/Front';
+import { LoadingOverlay } from '@sharedComponents/loader/LoadingOverlay';
+import Container from "@sharedComponents/layout/Container";
+import Slogan from '@sharedComponents/misc/Slogan';
+import Front from '@sharedComponents/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
 import axios from '@utilities/axios'
 
@@ -53,7 +53,7 @@ export default function Login() {
                 navigate('/chat');
             },
             onError: (err: any) => {
-                if (axios.isAxiosError(err) && err.response?.status === 422) { 
+                if (axios.isAxiosError(err) && err.response?.status === 422) {
                     Toast({ icon: 'error', title: err.response.data.message });
                 } else if (axios.isAxiosError(err) && err.response?.status === 401) {
                     Toast({ icon: 'error', title: err.response.data.error });

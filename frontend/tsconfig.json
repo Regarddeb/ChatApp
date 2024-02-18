@@ -28,7 +28,8 @@
       "@layouts/*": ["components/layouts/*"],
       "@assets/*": ["assets/*"],
       "@utilities/*": ["utilities/*"],
-      "@atoms/*": ["atoms/*"]
+      "@atoms/*": ["atoms/*"],
+      "@sharedComponents/*": ["sharedComponents/*"]
     }
   },
   "include": ["src"],

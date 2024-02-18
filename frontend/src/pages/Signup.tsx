@@ -9,12 +9,12 @@ import { useMutation } from 'react-query';
 
 import axios from '@utilities/axios';
 import { useAtom } from 'jotai';
-import Container from "@components/layouts/Container";
-import SignupMessage from '@components/misc/SignupMessage';
-import Front from '@components/misc/Front';
+import Container from "@sharedComponents/layout/Container";
+import SignupMessage from '@sharedComponents/misc/SignupMessage';
+import Front from '@sharedComponents/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
 import Toast from '@components/feedback/Toast';
-import { LoadingOverlay } from '@components/loader/LoadingOverlay';
+import { LoadingOverlay } from '@sharedComponents/loader/LoadingOverlay';
 
 const schema = z.object({
     username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -79,7 +79,7 @@ export default function Signup() {
             {mutation.isLoading && (
                 <LoadingOverlay />
             )}
-            
+
             <div className="flex justify-between items-center overflow-auto w-full p-2 mt-2">
                 <div className="w-5/12 h-full flex flex-col space-y-7">
 

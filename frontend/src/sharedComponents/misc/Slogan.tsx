@@ -1,4 +1,4 @@
-import Logo from "@components/misc/Logo";
+import Logo from "@sharedComponents/misc/Logo";
 import mesh_gradient from "@assets/images/background/mesh_gradients.svg";
 
 export default function Slogan() {
