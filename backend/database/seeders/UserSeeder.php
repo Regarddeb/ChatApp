@@ -20,11 +20,14 @@ class UserSeeder extends Seeder
             $username = $faker->userName;
             $email = $faker->unique()->safeEmail;
             $password = Hash::make('password');
+            $timestamp = $faker->dateTime->format('Y-m-d H:i:s');
 
             User::create([
                 'username' => $username,
                 'email' => $email,
-                'password' => $password
+                'password' => $password,
+                'active' => 0,
+                'logged_out' => $timestamp
             ]);
         }
     }

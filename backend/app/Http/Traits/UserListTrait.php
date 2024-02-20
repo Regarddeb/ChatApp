@@ -10,7 +10,7 @@ trait UserListTrait
     // Add your trait methods here
     public function UserListTrait()
     {
-        $users = User::paginate(10);
-        
+        $users = User::paginate(15);
+        return $users;
     }
 }

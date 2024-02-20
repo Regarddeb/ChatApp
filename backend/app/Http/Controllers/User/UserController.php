@@ -10,11 +10,13 @@ use Exception;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\LoginRequest;
 
+use App\Http\Traits\UserListTrait;
 use App\Http\Actions\User\StoreUserAction;
 use App\Http\Actions\User\AuthUserAction;
 
 class UserController extends Controller
 {
+    use UserListTrait;
     public function store(UserRequest $userRequest): JsonResponse
     {
         $validatedData = $userRequest->validated();
@@ -38,4 +40,11 @@ class UserController extends Controller
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
     }
+
+    public function allUsers()
+    {
+        $users = $this->UserListTrait();
+        return response()->json(['users' => $users]);
+    }
+    
 }

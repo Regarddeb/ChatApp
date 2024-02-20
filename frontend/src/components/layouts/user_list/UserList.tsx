@@ -6,14 +6,16 @@ import { userSearchActiveAtom } from "@atoms/menuAtoms";
 import { useAtom } from "jotai";
 
 export const UserList: React.FC = () => {
-    const [userSearchActive, setUserSearch] = useAtom(userSearchActiveAtom);
+    const [userSearchActive, setUserSearchActive] = useAtom(userSearchActiveAtom);
+
+
 
     const handleBackClick = () => {
-        setUserSearch(false);
+        setUserSearchActive(false);
     }
 
     const handleUserSearchFocus = () => {
-        setUserSearch(true);
+        setUserSearchActive(true);
     }
 
     return (

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('active');
+            $table->timestamp('logged_out');
             $table->string('display_picture_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
