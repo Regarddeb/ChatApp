@@ -17,10 +17,11 @@ class AuthUserAction
         if ($user && Hash::check($credentials['password'], $user->password)) {
             $token = $user->createToken('token')->plainTextToken;
             $userResource = new UserResource($user);
+            $user->active = 1;
+            $user->save();
             return response()->json(['user' => $userResource, 'token' => $token]);
         }
 
-        // Authentication failed
         return null;
     }
 

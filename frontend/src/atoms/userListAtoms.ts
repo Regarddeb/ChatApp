@@ -1,5 +1,3 @@
-// import atom from 'jotai';
+import { atom } from "jotai";
 
-
-
-// export const usersAtom = atom<>([])
+export const searchTermAtom = atom<string>("");

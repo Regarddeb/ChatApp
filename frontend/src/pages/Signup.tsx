@@ -6,14 +6,13 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
 
-
 import axios from '@utilities/axios';
 import { useAtom } from 'jotai';
 import Container from "@sharedComponents/layout/Container";
 import SignupMessage from '@sharedComponents/misc/SignupMessage';
 import Front from '@sharedComponents/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
-import Toast from '@components/feedback/Toast';
+import Toast from '@sharedComponents/feedback/Toast';
 import { LoadingOverlay } from '@sharedComponents/loader/LoadingOverlay';
 
 const schema = z.object({
@@ -66,7 +65,7 @@ export default function Signup() {
                     Toast({ icon: 'error', title: 'Something went wrong' });
                     console.error('An error occurred:', err.message);
                 }
-            },
+            }
         }
     );
 

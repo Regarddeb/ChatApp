@@ -23,7 +23,8 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::post('store', 'store')->name('store');
     Route::post('login', 'login')->name('login');
     Route::post('logout', 'logout')->name('logout');
+
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('users', 'allUsers');
+        Route::get('all-users', 'allUsers');
     });
 });

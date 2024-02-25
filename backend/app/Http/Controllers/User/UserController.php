@@ -41,9 +41,10 @@ class UserController extends Controller
         }
     }
 
-    public function allUsers()
+    public function allUsers(Request $request)
     {
-        $users = $this->UserListTrait();
+        $searchTerm = $request->input('search');
+        $users = $this->UserListTrait($searchTerm);
         return response()->json(['users' => $users]);
     }
     

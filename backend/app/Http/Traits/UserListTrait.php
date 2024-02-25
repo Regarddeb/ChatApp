@@ -8,9 +8,13 @@ use App\Http\Resources\UserListResource;
 trait UserListTrait
 {
     // Add your trait methods here
-    public function UserListTrait()
+    public function UserListTrait($search)
     {
-        $users = User::paginate(15);
+        $users = User::when($search, function ($query) use ($search) {
+            $query->where('username', 'LIKE', '%' . $search . '%');
+        })
+            ->orderBy('active', 'desc')
+            ->paginate(10);
         return $users;
     }
 }

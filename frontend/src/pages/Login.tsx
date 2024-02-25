@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import Toast from '@components/feedback/Toast';
+import Toast from '@sharedComponents/feedback/Toast';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 import { LoadingOverlay } from '@sharedComponents/loader/LoadingOverlay';
@@ -24,7 +24,7 @@ export default function Login() {
         email_username: z.string(),
         password: z.string(),
         remember_me: z.boolean().nullable(),
-    })
+    });
 
     type FormValues = z.infer<typeof loginSchema>;
 
@@ -41,8 +41,8 @@ export default function Login() {
         (data: FormValues) => axios.post('api/user/login', loginSchema.parse(data)),
         {
             onSuccess: (res) => {
-                console.log(res)
                 const { token, user } = res.data.user.original;
+                localStorage.setItem('token', token);
                 setUser((prev) => ({
                     ...prev,
                     token: token ?? prev.token,
@@ -66,7 +66,9 @@ export default function Login() {
     );
 
     const handleLoginSubmit: SubmitHandler<FormValues> = data => {
-        mutation.mutate(data);
+        if (loginSchema.parse(data)) {
+            mutation.mutate(data);
+        }
     }
 
     return (

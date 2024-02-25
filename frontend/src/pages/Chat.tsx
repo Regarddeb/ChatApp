@@ -33,10 +33,10 @@ export default function Chat() {
                     <div className="py-2 shadow-sm flex items-center justify-between px-2">
                         <div className="flex items-center space-x-3">
                             <div className="rounded-full w-[35px] h-[35px] bg-gray-200"></div>
-                            <p className="flex flex-col items-start hover:bg-secondary p-1 rounded-md hover:cursor-pointer">
+                            <div className="flex flex-col items-start hover:bg-secondary p-1 rounded-md hover:cursor-pointer">
                                 <span className="text-sm font-medium opacity-80">User name sample</span>
                                 <span className="text-xs font-light opacity-70">Active 12 min ago</span>
-                            </p>
+                            </div>
                         </div>
                         <IconButton icon={<IconDots />} className="p-1" />
                     </div>
