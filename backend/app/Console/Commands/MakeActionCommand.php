@@ -31,7 +31,12 @@ class MakeActionCommand extends Command
 
     protected function createAction($class)
     {
-        $path = app_path("Http/Actions/{$class}.php");
+        $nameParts = explode('/', $class);
+        $className = array_pop($nameParts);
+        $namespacePath = implode('/', $nameParts);
+        $namespace = $this->laravel->getNamespace() . 'Http\\Actions\\' . $namespacePath;
+
+        $path = app_path("Http/Actions/{$namespacePath}/{$className}.php");
 
         $this->makeDirectory($path);
 
@@ -40,15 +45,13 @@ class MakeActionCommand extends Command
             return false;
         }
 
-        $this->files->put($path, $this->buildClass($class));
+        $this->files->put($path, $this->buildClass($namespace, $className));
 
         $this->info("Action class created: $class");
     }
 
-    protected function buildClass($class)
+    protected function buildClass($namespace, $class)
     {
-        $namespace = $this->laravel->getNamespace() . 'Http\\Actions';
-
         return str_replace(
             ['DummyNamespace', '{{ className }}'],
             [$namespace, $class],

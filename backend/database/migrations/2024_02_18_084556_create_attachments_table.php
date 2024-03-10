@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('attachments', function (Blueprint $table) {
             $table->id('attachment_id');
             $table->unsignedBigInteger('chat_id');
+            $table->string('attachment_path');
             $table->timestamps();
 
             $table->foreign('chat_id')->references('chat_id')->on('chats')->onDelete('cascade');

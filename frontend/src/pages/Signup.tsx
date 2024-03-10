@@ -46,6 +46,8 @@ export default function Signup() {
         {
             onSuccess: (res) => {
                 const { token, user } = res.data.userData.original;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', user);
                 setUser((prev) => ({
                     ...prev,
                     token: token ?? prev.token,

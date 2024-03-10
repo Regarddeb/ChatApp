@@ -2,17 +2,24 @@
 import React from 'react';
 import { IconButton } from "@components/button/IconButton";
 import { IconDotsVertical } from "@tabler/icons-react";
-import { User } from '../../../type/userTypes';
+import { User } from '@type/userTypes';
+import { selectedUserAtom } from '@atoms/chatAtoms';
 import { ActveIndicator } from '@sharedComponents/partials/ActiveIndicator';
+import { useAtom } from 'jotai';
 
 interface UserInstanceProps {
     user: User;
 }
 
 export const UserInstance: React.FC<UserInstanceProps> = ({ user }) => {
+    const [, setSelectedUser] = useAtom(selectedUserAtom);
+
+    const handleUserClick = () => {
+        setSelectedUser(user)
+    }
 
     return (
-        <div className="flex group items-center justify-between group space-x-2 hover:bg-secondary hover:cursor-pointer hover:bg-opacity-50 p-2 rounded-md">
+        <div onClick={handleUserClick} className="flex group items-center justify-between group space-x-2 hover:bg-secondary hover:cursor-pointer hover:bg-opacity-50 p-2 rounded-md pr-3">
             <div className="w-2/12">
                 <div className="rounded-full bg-gray-300 w-[40px] h-[40px]"></div>
             </div>

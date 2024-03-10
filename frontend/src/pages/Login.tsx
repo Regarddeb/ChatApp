@@ -1,7 +1,6 @@
 import { IconAt, IconLock } from '@tabler/icons-react';
 import { Input, PasswordInput, Button, Checkbox } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import { useMutation } from 'react-query';
@@ -15,20 +14,14 @@ import Slogan from '@sharedComponents/misc/Slogan';
 import Front from '@sharedComponents/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
 import axios from '@utilities/axios'
+import LoginValues from '@type/loginValues';
+import { loginSchema } from '@type/loginValues';
 
 export default function Login() {
     const [, setUser] = useAtom(userAtom);
     const navigate = useNavigate();
 
-    const loginSchema = z.object({
-        email_username: z.string(),
-        password: z.string(),
-        remember_me: z.boolean().nullable(),
-    });
-
-    type FormValues = z.infer<typeof loginSchema>;
-
-    const { handleSubmit, control, formState: { errors }, setValue } = useForm<FormValues>({
+    const { handleSubmit, control, formState: { errors }, setValue } = useForm<LoginValues>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
             email_username: '',
@@ -38,7 +31,7 @@ export default function Login() {
     });
 
     const mutation = useMutation(
-        (data: FormValues) => axios.post('api/user/login', loginSchema.parse(data)),
+        (data: LoginValues) => axios.post('api/user/login', loginSchema.parse(data)),
         {
             onSuccess: (res) => {
                 const { token, user } = res.data.user.original;
@@ -65,7 +58,7 @@ export default function Login() {
         }
     );
 
-    const handleLoginSubmit: SubmitHandler<FormValues> = data => {
+    const handleLoginSubmit: SubmitHandler<LoginValues> = data => {
         if (loginSchema.parse(data)) {
             mutation.mutate(data);
         }

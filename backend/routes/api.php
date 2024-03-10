@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,8 @@ Route::controller(UserController::class)->prefix('user')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('all-users', 'allUsers');
     });
+});
+
+Route::controller(ChatController::class)->prefix('chat')->group(function () {
+    Route::post('send', 'send');
 });

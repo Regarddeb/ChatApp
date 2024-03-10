@@ -26,7 +26,6 @@ export const UserList: React.FC = () => {
         }
     );
 
-
     return (
         <>
             <div className="w-full pl-1 flex justify-between items-center">
@@ -38,7 +37,7 @@ export const UserList: React.FC = () => {
 
             <SearchInput />
 
-            <div className={`w-full flex-col space-y-2 overflow-y-auto pr-3 ${isLoading && 'h-full'}`} onScroll={(e) => {
+            <div className={`w-full flex-col space-y-2 overflow-y-auto ${isLoading && 'h-full'}`} onScroll={(e) => {
                 if (
                     e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight &&
                     hasNextPage
