@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Thread extends Model
+class Attachment extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    protected $table = 'attachments';
 
-    protected $table = 'threads';
-
-    protected $primaryKey = 'thread_id';
+    protected $primaryKey = 'attachment_id';
 
     protected $fillable = [
-        'group',
-        'member_count',
+        'chat_id',
+        'attachemnt_path',
     ];
 }

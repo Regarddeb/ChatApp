@@ -13,6 +13,7 @@ trait UserListTrait
         $users = User::when($search, function ($query) use ($search) {
             $query->where('username', 'LIKE', '%' . $search . '%');
         })
+            ->whereNot('id', auth()->id())
             ->orderBy('active', 'desc')
             ->paginate(10);
         return $users;

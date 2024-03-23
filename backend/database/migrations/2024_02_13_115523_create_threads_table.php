@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('thread_id');
             $table->boolean('group');
             $table->integer('member_count');
-            $table->string('default_reaction');
         });
     }
 

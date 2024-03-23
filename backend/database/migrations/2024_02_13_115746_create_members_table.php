@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('member_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('thread_id');
-            $table->boolean('admin');
             $table->boolean('typing');
 
             $table->foreign('thread_id')->references('thread_id')->on('threads')->onDelete('cascade');
