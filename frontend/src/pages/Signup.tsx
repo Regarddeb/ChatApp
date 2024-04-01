@@ -81,8 +81,8 @@ export default function Signup() {
                 <LoadingOverlay />
             )}
 
-            <div className="flex justify-between items-center overflow-auto w-full p-2 mt-2">
-                <div className="w-5/12 h-full flex flex-col space-y-7">
+            <div className="flex justify-between items-center overflow-auto w-full h-full p-2 mt-2">
+                <div className="w-5/12 h-full flex flex-col justify-center space-y-7">
 
                     <SignupMessage />
 

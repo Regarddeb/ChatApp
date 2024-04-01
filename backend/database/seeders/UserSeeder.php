@@ -26,8 +26,9 @@ class UserSeeder extends Seeder
                 'username' => $username,
                 'email' => $email,
                 'password' => $password,
+                'display_picture_path' => null,
                 'active' => 0,
-                'logged_out' => $timestamp
+                'logged_out' => $timestamp,
             ]);
         }
     }

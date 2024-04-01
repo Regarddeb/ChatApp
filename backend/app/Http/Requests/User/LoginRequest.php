@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'password' => 'required|string|min:8',
-            'email_username' => 'required|string', // This is just for validation, not for direct use in exists rule
+            'email_username' => 'required|string', 
             'remember_me' => 'nullable',
         ];
     }

@@ -15,7 +15,7 @@ trait UserListTrait
         })
             ->whereNot('id', auth()->id())
             ->orderBy('active', 'desc')
-            ->paginate(10);
+            ->paginate(15);
         return $users;
     }
 }

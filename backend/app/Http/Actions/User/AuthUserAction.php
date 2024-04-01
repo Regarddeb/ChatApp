@@ -11,22 +11,29 @@ class AuthUserAction
 {
     public function execute(array $credentials)
     {
-        // Auth::attempt($credentials) ? Auth::user()->user_id : null;
+        $field = filter_var($credentials['email_username'], FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
 
-        $user = User::where('username', $credentials['email_username'])
-            ->orWhere('email', $credentials['email_username'])
-            ->first();
+        $credentials = [
+            $field => $credentials['email_username'],
+            'password' => $credentials['password'],
+        ];
 
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            $token = $user->createToken('token')->plainTextToken;
-            $userResource = new UserResource($user);
-            $user->active = 1;
-            $user->save();
-            return response()->json(['user' => $userResource, 'token' => $token]);
+        try {
+            if (Auth::attempt($credentials)) {
+                $user = User::find(Auth::user()->id);
+
+                $token = $user->createToken('token')->plainTextToken;
+                $userResource = new UserResource($user);
+                return response()->json(['user' => $userResource, 'token' => $token]);
+            } else {
+                // Handle invalid credentials
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return response()->json(['error' => 'Internal Server Error'], 500);
         }
-
-        return null;
     }
-
-    
 }

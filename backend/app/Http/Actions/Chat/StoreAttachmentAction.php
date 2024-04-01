@@ -22,7 +22,8 @@ class StoreAttachmentAction
         $chat_id = $this->chat_id;
         $thread_id = $this->thread_id;
 
-        $attachmentPath = $attachment ? $attachment->store('attachments/' . $thread_id, 'public') : null;
+        $attachmentPath = Storage::putFile('public/attachments/' . $thread_id, $attachment, 'public');
+
         Attachment::create([
             'chat_id' => $chat_id,
             'attachment_path' => $attachmentPath

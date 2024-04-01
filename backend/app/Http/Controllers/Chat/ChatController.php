@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Chat\StoreChatRequest;
 use App\Http\Actions\Chat\StoreChatAction;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
@@ -18,7 +19,9 @@ class ChatController extends Controller
             $attachment = $request->file('attachment');
 
             $storeChatAction = new StoreChatAction($message, null, $attachment, $user_id);
-            $storeChatAction->execute();
+            $chat = $storeChatAction->execute();
+
+            return response()->json(['chat' => $chat]);
         }, 2);
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Actions\User;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Exception;
+
 use App\Models\User;
 use App\Http\Resources\UserResource;
-use Illuminate\Http\JsonResponse;
-use Exception;
 
 class StoreUserAction
 {
@@ -19,6 +21,11 @@ class StoreUserAction
                 'display_picture_path' => null,
                 'active' => 1,
             ]);
+
+            if (!Auth::attempt(['email' => $user->email, 'password' => $user->password, 'active' => 1])) {
+                return response()->json(['message' => 'Authentication Failed'], 500);
+            }
+
             $userResource = new UserResource($user);
             $token = $user->createToken('token')->plainTextToken;
             return response()->json(['user' => $userResource, 'token' => $token]);

@@ -15,6 +15,6 @@ class Attachment extends Model
 
     protected $fillable = [
         'chat_id',
-        'attachemnt_path',
+        'attachment_path',
     ];
 }

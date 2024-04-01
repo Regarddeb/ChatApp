@@ -25,8 +25,8 @@ export default function Chat() {
                 {/* side menu */}
                 <Sidemenu />
 
-                {/* chatlist */}
-                <div className="w-3/12 flex flex-col border-r p-2 space-y-3 h-full">
+                {/* list */}
+                <div className="w-3/12 flex flex-col border-r p-2 space-y-3 min-h-full">
                     {currentTab === 'chat_history' && <ChatHistory />}
                     {currentTab === 'user_list' && <UserList />}
                 </div>
@@ -41,12 +41,12 @@ export default function Chat() {
 
                     {selectedUser.id !== 0 ?
                         <ChatArea />
-                        :   
+                        :
                         <NoThread />
                     }
-            
+
                     <InputArea />
-                    
+
                 </div>
 
                 {/* chatmate info */}
