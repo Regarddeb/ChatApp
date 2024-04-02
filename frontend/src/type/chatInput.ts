@@ -1,7 +1,6 @@
 import z from "zod";
 
 export const chatInputSchema = z.object({
-  attachment: z.instanceof(File).nullable(),
   message: z.string(),
 });
 

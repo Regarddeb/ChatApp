@@ -39,8 +39,10 @@ axios.interceptors.response.use(
         case 401:
           // Handle unauthorized access (e.g., redirect to login page)
           break
-        case 404:
-          // Handle not found error
+        case 403:
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
           break
         case 500:
           // Handle internal server error

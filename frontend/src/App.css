@@ -94,3 +94,8 @@
 .outgoing {
   background: linear-gradient(170deg, rgb(113, 122, 173), rgb(90, 87, 148));
 }
+
+
+.mantine-Input-section {
+  width: '100px'
+}

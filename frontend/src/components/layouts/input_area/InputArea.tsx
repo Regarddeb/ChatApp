@@ -1,20 +1,23 @@
-import { useRef, ChangeEvent } from 'react';
-import { IconSend2 } from "@tabler/icons-react";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { useRef, ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
+import { IconCirclePlus, IconSend2, IconX } from "@tabler/icons-react";
 import { Input } from "@mantine/core";
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import axios from '@utilities/axios';
-// import { useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 
 import { IconButton } from "@components/button/IconButton";
-import { selectedUserAtom } from '@atoms/chatAtoms';
+import { selectedUserAtom, threadAtom } from '@atoms/chatAtoms';
 import chatInput from '@type/chatInput';
 import { chatInputSchema } from '@type/chatInput';
+import { AttachmentName } from './AttachmentName';
 
 export const InputArea: React.FC = () => {
-    const [selectedUser] = useAtom(selectedUserAtom);
+    const selectedUser = useAtomValue(selectedUserAtom);
+    const [thread, setThread] = useAtom(threadAtom);
+    const [attachment, setAttachment] = useState<File | null>(null);
+
     const { control, formState: { errors }, handleSubmit, setValue } = useForm<chatInput>({
         resolver: zodResolver(chatInputSchema),
         defaultValues: {
@@ -22,88 +25,94 @@ export const InputArea: React.FC = () => {
         }
     });
 
+    const mutation = useMutation((chat: FormData) =>
+        axios.post('api/chat/send', chat)
+    );
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleAddFileClick = () => {
+    const handleAddFileClick = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
         if (fileInputRef.current) {
             fileInputRef.current.click();
+        }
+    };
+
+    const handleRemoveFile = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        setAttachment(null);
+    }
+
+    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            handleSubmit(handleChatSubmit)();
         }
     };
 
     const handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
-            setValue('attachment', files[0]);
+            setAttachment(files[0]);
         }
     };
 
     const handleChatSubmit: SubmitHandler<chatInput> = data => {
         const formData = new FormData();
         formData.append('message', data.message);
-        if (data.attachment) {
-            formData.append('attachment', data.attachment);
+
+        if (attachment) {
+            formData.append('attachment', attachment);
         }
         formData.append('user_id', selectedUser.id.toString());
+        formData.append('thread_id', (thread ?? 0).toString());
 
-        axios.post('api/chat/send', formData)
-            .then((res: any) => {
-                console.log(res)
-            })
-            .catch((err: any) => {
-                console.log(err)
-            });
-
+        mutation.mutate(formData, {
+            onSuccess: (res) => {
+                setThread(res.data.chat.thread_id)
+                setValue('message', '');
+                setAttachment(null);
+            },
+            onError: (err) => {
+                console.log(err);
+            },
+        });
     };
 
-
     return (
-        <form onSubmit={handleSubmit(handleChatSubmit)} className="w-full py-2 px-0.5 flex items-center space-x-2">
+        <form onSubmit={handleSubmit(handleChatSubmit)} className="w-full py-2 px-0.5 flex items-center space-x-2 truncate text-ellipsis">
 
-            <IconButton
-                icon={<IconCirclePlus size={19} />}
-                className="p-2"
-                onClick={handleAddFileClick}
-                disabled={selectedUser.id === 0}
-            />
-            <Controller
-                name='attachment'
-                control={control}
-                render={({ field }) => (
-                    <input
-                        {...field}
-                        disabled={selectedUser.id === 0}
-                        type="file"
-                        accept='image/*'
-                        id="fileInput"
-                        ref={fileInputRef}
-                        style={{ display: 'none' }}
-                        value=''
-                        onChange={handleFileInputChange}
-                    />
-                )}
-            />
+           
 
             <Controller
                 name='message'
                 control={control}
                 render={({ field }) => (
                     <Input
-                        className="w-full"
+                        className="flex-grow"
                         radius={20}
+                        leftSection={
+                            attachment ? (
+                                <AttachmentName attachment={attachment} />
+                            ) : null
+                        }
+                        leftSectionWidth={attachment ? 100 : 0}
                         variant="default"
                         placeholder="Enter your message here..."
                         error={!!errors.message}
                         disabled={selectedUser.id === 0}
                         autoComplete='off'
+                        onKeyDown={handleKeyPress}
                         {...field}
                     />
                 )}
             />
 
+
             <IconButton
-                disabled={selectedUser.id === 0}
                 icon={<IconSend2 size={20} />}
                 className="p-2 pl-2.5"
+                disabled={selectedUser.id === 0}
                 type='submit'
             />
 
