@@ -21,7 +21,7 @@ export default function Chat() {
     return (
         <Container>
             <Header />
-            <div className="w-full flex" style={{ height: '91.6%' }}>
+            <div className="w-full flex" style={{ height: '93.4%' }}>
                 {/* side menu */}
                 <Sidemenu />
 

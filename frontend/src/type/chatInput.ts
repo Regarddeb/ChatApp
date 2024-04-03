@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const chatInputSchema = z.object({
-  message: z.string(),
+  message: z.string().min(1),
 });
 
 type ChatInput = z.infer<typeof chatInputSchema>;

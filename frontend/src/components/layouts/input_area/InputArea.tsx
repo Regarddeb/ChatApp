@@ -1,6 +1,6 @@
-import { useRef, ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react';
-import { IconCirclePlus, IconSend2, IconX } from "@tabler/icons-react";
-import { Input } from "@mantine/core";
+import { KeyboardEvent, useState } from 'react';
+import { IconSend2 } from "@tabler/icons-react";
+import { Input, Loader } from "@mantine/core";
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom, useAtomValue } from 'jotai';
@@ -12,6 +12,7 @@ import { selectedUserAtom, threadAtom } from '@atoms/chatAtoms';
 import chatInput from '@type/chatInput';
 import { chatInputSchema } from '@type/chatInput';
 import { AttachmentName } from './AttachmentName';
+import { AttachmentSelector } from './AttachmentSelector';
 
 export const InputArea: React.FC = () => {
     const selectedUser = useAtomValue(selectedUserAtom);
@@ -29,31 +30,10 @@ export const InputArea: React.FC = () => {
         axios.post('api/chat/send', chat)
     );
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleAddFileClick = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-
-    const handleRemoveFile = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setAttachment(null);
-    }
-
     const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.key === 'Enter' && !event.shiftKey && !mutation.isLoading) {
             event.preventDefault();
             handleSubmit(handleChatSubmit)();
-        }
-    };
-
-    const handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            setAttachment(files[0]);
         }
     };
 
@@ -82,7 +62,7 @@ export const InputArea: React.FC = () => {
     return (
         <form onSubmit={handleSubmit(handleChatSubmit)} className="w-full py-2 px-0.5 flex items-center space-x-2 truncate text-ellipsis">
 
-           
+            <AttachmentSelector setAttachment={setAttachment} attachment={attachment} />
 
             <Controller
                 name='message'
@@ -97,6 +77,7 @@ export const InputArea: React.FC = () => {
                             ) : null
                         }
                         leftSectionWidth={attachment ? 100 : 0}
+                        rightSection={mutation.isLoading ? <Loader color="#7a84ba" size="sm" type="dots" /> : null}
                         variant="default"
                         placeholder="Enter your message here..."
                         error={!!errors.message}
@@ -108,11 +89,10 @@ export const InputArea: React.FC = () => {
                 )}
             />
 
-
             <IconButton
                 icon={<IconSend2 size={20} />}
                 className="p-2 pl-2.5"
-                disabled={selectedUser.id === 0}
+                disabled={selectedUser.id === 0 || mutation.isLoading}
                 type='submit'
             />
 

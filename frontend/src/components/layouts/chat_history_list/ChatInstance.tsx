@@ -1,8 +1,16 @@
 import React from 'react';
 import { IconDotsVertical } from "@tabler/icons-react";
-import { IconButton } from '@components/button/IconButton';
 
-export const ChatInstance: React.FC = () => {
+import { IconButton } from '@components/button/IconButton';
+import { Thread } from '@type/chatHistory';
+import { calculateTimeDifference } from '@utilities/timeDifference';
+
+interface ChatInstanceProps {
+    thread: Thread
+}
+
+export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
+
     return (
         <div className="w-full hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md">
 
@@ -11,16 +19,21 @@ export const ChatInstance: React.FC = () => {
                 </div>
             </div>
 
-            <div className="flex pl-3 flex-col w-full truncate space-y-1 text-ellipsis py-1 mr-1 group-hover:mr-1.5">
+            <div className="flex pl-3 flex-col w-full truncate space-y-1 text-ellipsis py-1 mr-1">
 
-                <p className="text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi, optio debitis autem quia quidem doloribus eligendi. Pariatur ut nobis eligendi adipisci fugiat esse amet, eum itaque, provident ipsum assumenda quidem!</p>
+                <p className="text-sm text-start">{thread.user[0].username}</p>
 
-                <p className="text-[12px] font-light opacity-70 relative">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis iusto placeat dicta similique obcaecati. Debitis aut repudiandae, mollitia iste neque ex dolores commodi corporis nostrum, aliquid ipsa alias? Tempore, assumenda!
-                    <span className="z-10 text-[10px] absolute right-0 bg-white pt-[2px] pl-[7px] group-hover:hidden">2:32 PM</span></p>
+                <p className="text-[12px] font-light opacity-70 relative text-start">
+
+                    {thread.latest_chat.user ? thread.latest_chat.user.username + ' : ' : 'You : '}
+                    {thread.latest_chat.has_attachment ? 'Sent a photo' : thread.latest_chat.message}
+
+                    <span className="z-10 text-[10px] absolute right-0 bg-white pt-[2px] pl-[7px] group-hover:hidden">{calculateTimeDifference(thread.latest_chat.created_at)}</span>
+                </p>
 
             </div>
 
-            <div className="w-1/12 pt-1 hidden group-hover:flex group-hover:pr-2.5">
+            <div className="w-1/12 pt-1 hidden group-hover:flex">
                 <IconButton icon={<IconDotsVertical size={18} style={{ opacity: 0.7 }} />} className='group-hover:border p-1 mr-[-10px] hover:bg-white' />
             </div>
 

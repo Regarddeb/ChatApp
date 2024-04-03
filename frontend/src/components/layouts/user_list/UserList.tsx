@@ -37,14 +37,16 @@ export const UserList: React.FC = () => {
 
             <SearchInput />
 
-            <div className={`w-full flex-col space-y-2 overflow-y-auto ${isLoading && 'h-full'}`} onScroll={(e) => {
-                if (
-                    e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight &&
-                    hasNextPage
-                ) {
-                    fetchNextPage();
-                }
-            }}>
+            <div className={`w-full flex-col space-y-2 overflow-y-auto ${isLoading && 'h-full'}`}
+                onScroll={(e) => {
+                    if (
+                        e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight &&
+                        hasNextPage
+                    ) {
+                        fetchNextPage();
+                    }
+                }}
+            >
 
                 {isLoading && <MenuLoading />}
                 {data?.pages[0].users.data.length === 0 ? (

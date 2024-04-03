@@ -1,31 +1,32 @@
-import React from 'react';
-import { Input } from "@mantine/core";
-import { IconSquarePlus, IconSearch, IconArrowLeft } from "@tabler/icons-react";
+import React from "react";
+import { IconSquarePlus } from "@tabler/icons-react";
+import { useAtomValue } from "jotai";
+import { useInfiniteQuery } from "react-query";
 
+import axios from "@utilities/axios";
 import { ChatInstance } from "./ChatInstance";
-import { searchHistoryActiveAtom } from '@atoms/menuAtoms';
+import { MenuLoading } from "@sharedComponents/loader/MenuLoading";
 import { IconButton } from '@components/button/IconButton';
-import { SearchList } from './SearchList';
-import { useAtom } from 'jotai';
-
-const numberOfChatInstances = 5;
+import { searchChatHistoryActiveAtom } from '@atoms/menuAtoms';
+import { searchChatHistoryTermAtom } from '@atoms/chatHistoryAtoms';
+import { SearchInput } from "./SearchInput";
+import { EmptyResult } from "@sharedComponents/feedback/EmptyResult";
+import { Thread } from "@type/chatHistory";
 
 export const ChatHistory: React.FC = () => {
-    const [searchHistoryActive, setSearchHistoryActive] = useAtom(searchHistoryActiveAtom);
+    const searchHistoryActive = useAtomValue(searchChatHistoryActiveAtom);
+    const searchHistoryTerm = useAtomValue(searchChatHistoryTermAtom);
 
-    const chatInstances = [];
-
-    for (let i = 0; i < numberOfChatInstances; i++) {
-        chatInstances.push(<ChatInstance key={i} />);
-    }
-
-    const handleSearchFocus = () => {
-        setSearchHistoryActive(true)
-    }
-
-    const handleBackClick = () => {
-        setSearchHistoryActive(false)
-    }
+    const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
+        ['chatHistoryList', searchHistoryTerm],
+        async ({ pageParam = 1 }) => {
+            const response = await axios.get(`/api/thread/all-threads?page=${pageParam}&search=${searchHistoryTerm}`);
+            return response.data;
+        },
+        {
+            getNextPageParam: (lastPage) => lastPage.threads.next_page_url ? lastPage.threads.current_page + 1 : undefined,
+        }
+    );
 
     return (
         <>
@@ -36,21 +37,31 @@ export const ChatHistory: React.FC = () => {
                 <IconButton icon={<IconSquarePlus size={20} />} className='p-1.5' />
             </div>
 
-            <div className="w-full flex space-x-2">
-                {searchHistoryActive &&
-                    <IconButton icon={<IconArrowLeft size={21} />} className='p-2' onClick={handleBackClick} />
-                }
-                <Input onFocus={handleSearchFocus} placeholder="Search chat history" variant="filled" className='w-full' leftSection={<IconSearch size={19} />} />
-            </div>
+            <SearchInput />
 
-            <div className={`w-full flex-col space-y-2 overflow-y-auto ${searchHistoryActive ? '' : 'pr-0'}`}>
-                {!searchHistoryActive ?
-                    (
-                        chatInstances
-                    ) : (
-                        <SearchList />
-                    )
-                }
+            <div className={`w-full h-full flex-col space-y-2 overflow-y-auto ${searchHistoryActive ? '' : 'pr-0'}`}
+                onScroll={(e) => {
+                    if (
+                        e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight &&
+                        hasNextPage
+                    ) {
+                        fetchNextPage();
+                    }
+                }}
+            >
+                {isLoading && <MenuLoading />}
+
+                {data?.pages[0].threads.data.length === 0 ? (
+                    <EmptyResult message="No previous messages" />
+                ) : (
+                    data?.pages.map((page, index) => (
+                        <React.Fragment key={index}>
+                            {page.threads.data.map((thread: Thread) => (
+                                <ChatInstance key={index} thread={thread} />
+                            ))}
+                        </React.Fragment>
+                    ))
+                )}
             </div>
         </>
     )

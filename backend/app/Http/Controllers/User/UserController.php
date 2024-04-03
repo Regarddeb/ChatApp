@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Exception;
 
 use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\LoginRequest;
@@ -41,11 +40,10 @@ class UserController extends Controller
         }
     }
 
-    public function allUsers(Request $request)
+    public function allUsers(Request $request): JsonResponse
     {
         $searchTerm = $request->input('search');
         $users = $this->UserListTrait($searchTerm);
         return response()->json(['users' => $users]);
     }
-    
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -34,6 +35,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'laravel_through_key'
     ];
 
     /**
@@ -45,4 +47,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function member(): HasMany
+    {
+        return $this->hasMany(Member::class, 'id');
+    }
+
+    public function chat(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'id');
+    }
+
+    public function threadDeletedBy(): HasMany
+    {
+        return $this->hasMany(Thread_Deleted_By::class, 'id');
+    }
 }
