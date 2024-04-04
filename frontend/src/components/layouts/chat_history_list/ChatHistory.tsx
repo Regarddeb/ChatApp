@@ -51,13 +51,13 @@ export const ChatHistory: React.FC = () => {
             >
                 {isLoading && <MenuLoading />}
 
-                {data?.pages[0].threads.data.length === 0 ? (
+                {data?.pages[0].threads.data?.length === 0 ? (
                     <EmptyResult message="No previous messages" />
                 ) : (
-                    data?.pages.map((page, index) => (
-                        <React.Fragment key={index}>
-                            {page.threads.data.map((thread: Thread) => (
-                                <ChatInstance key={index} thread={thread} />
+                    data?.pages.map((page, pageIndex) => (
+                        <React.Fragment key={'page ' + pageIndex}>
+                            {page.threads.data.map((thread: Thread, threadIndex: number) => (
+                                <ChatInstance key={'thread ' + pageIndex + '-' + threadIndex} thread={thread} />
                             ))}
                         </React.Fragment>
                     ))

@@ -1,18 +1,23 @@
 import React from 'react';
 import { IconDotsVertical } from "@tabler/icons-react";
 
+import { userAtom } from '@atoms/userAtoms';
 import { IconButton } from '@components/button/IconButton';
-import { Thread } from '@type/chatHistory';
 import { calculateTimeDifference } from '@utilities/timeDifference';
+import { Thread, SeenBy } from '@type/chatHistory';
+import { useAtomValue } from 'jotai';
 
 interface ChatInstanceProps {
     thread: Thread
 }
 
 export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
+    const user = useAtomValue(userAtom);
+
+    const seen = thread.latest_chat.seen_by.some(seenBy => seenBy.member.user_id === user.id);
 
     return (
-        <div className="w-full hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md">
+        <div className={`w-full hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md ${!seen ? 'font-medium' : ''}`}>
 
             <div className="w-2/12">
                 <div className="bg-gray-100 rounded-full w-[50px] h-[48px]">
@@ -29,6 +34,7 @@ export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
                     {thread.latest_chat.has_attachment ? 'Sent a photo' : thread.latest_chat.message}
 
                     <span className="z-10 text-[10px] absolute right-0 bg-white pt-[2px] pl-[7px] group-hover:hidden">{calculateTimeDifference(thread.latest_chat.created_at)}</span>
+
                 </p>
 
             </div>

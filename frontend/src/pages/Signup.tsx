@@ -2,9 +2,10 @@ import { IconAt, IconLock, IconUser } from '@tabler/icons-react';
 import { Input, PasswordInput, Button } from '@mantine/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
+import { z } from 'zod';
 
 import axios from '@utilities/axios';
 import { useAtom } from 'jotai';
@@ -14,25 +15,16 @@ import Front from '@sharedComponents/misc/Front';
 import { userAtom } from '@atoms/userAtoms';
 import Toast from '@sharedComponents/feedback/Toast';
 import { LoadingOverlay } from '@sharedComponents/loader/LoadingOverlay';
+import { signupSchema } from '@type/signupSchema';
 
-const schema = z.object({
-    username: z.string().min(3, 'Username must be at least 3 characters'),
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-    password_confirmation: z.string().min(8, 'Password confirmation must be at least 8 characters')
-}).refine((data) => data.password === data.password_confirmation, {
-    path: ['password_confirmation'],
-    message: 'Passwords do not match',
-});
-
-type FormValues = z.infer<typeof schema>;
+type FormValues = z.infer<typeof signupSchema>;
 
 export default function Signup() {
     const [, setUser] = useAtom(userAtom);
     const navigate = useNavigate();
 
     const { handleSubmit, formState: { errors }, control, setError } = useForm<FormValues>({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(signupSchema),
         defaultValues: {
             username: '',
             email: '',
@@ -42,18 +34,12 @@ export default function Signup() {
     });
 
     const mutation = useMutation(
-        (data: FormValues) => axios.post('api/user/store', schema.parse(data)),
+        (data: FormValues) => axios.post('api/user/store', signupSchema.parse(data)),
         {
             onSuccess: (res) => {
                 const { token, user } = res.data.userData.original;
                 localStorage.setItem('token', token);
-                localStorage.setItem('user', user);
-                setUser((prev) => ({
-                    ...prev,
-                    token: token ?? prev.token,
-                    username: user?.username ?? prev.username,
-                    email: user?.email ?? prev.email,
-                }));
+                setUser(user);
                 Toast({ icon: 'success', title: 'Signed in successfully' });
                 navigate('/chat');
             },

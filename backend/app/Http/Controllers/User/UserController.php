@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\LoginRequest;
@@ -18,12 +19,14 @@ class UserController extends Controller
     use UserListTrait;
     public function store(UserRequest $userRequest): JsonResponse
     {
-        $validatedData = $userRequest->validated();
+        return DB::transaction(function () use ($userRequest) {
+            $validatedData = $userRequest->validated();
 
-        $storeUserAction = new StoreUserAction;
-        $userData = $storeUserAction->execute($validatedData);
+            $storeUserAction = new StoreUserAction;
+            $userData = $storeUserAction->execute($validatedData);
 
-        return response()->json(['userData' => $userData]);
+            return response()->json(['userData' => $userData]);
+        });
     }
 
     public function login(LoginRequest $loginRequest): JsonResponse

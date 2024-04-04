@@ -1,15 +1,5 @@
-import { atomWithStorage } from "jotai/utils";
+import { atomWithStorage } from 'jotai/utils'
+import { User } from '@type/userTypes'
+import { UserInitial } from '@type/userInitialValues'
 
-interface User {
-  token: string;
-  username: string;
-  email: string;
-}
-
-const initialUser: User = {
-  token: "",
-  username: "",
-  email: "",
-};
-
-export const userAtom = atomWithStorage<User>("user", initialUser);
+export const userAtom = atomWithStorage<User>('user', UserInitial)

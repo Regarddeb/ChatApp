@@ -55,7 +55,7 @@ export const UserList: React.FC = () => {
                     data?.pages.map((page, index) => (
                         <React.Fragment key={index}>
                             {page.users.data.map((user: User) => (
-                                <UserInstance key={user.id} user={user} />
+                                <UserInstance key={'user ' + user.id} user={user} />
                             ))}
                         </React.Fragment>
                     ))

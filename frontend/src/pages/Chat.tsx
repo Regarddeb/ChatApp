@@ -9,14 +9,15 @@ import { IconButton } from "@components/button/IconButton";
 import { Sidemenu } from "@sharedComponents/layout/Sidemenu";
 import { UserList } from "@components/layouts/user_list/UserList";
 import { currentTabAtom } from "@atoms/menuAtoms";
-import { selectedUserAtom } from "@atoms/chatAtoms";
+import { selectedUserAtom, threadAtom } from "@atoms/chatAtoms";
 import { ThreadHeader } from "@sharedComponents/partials/ThreadHeader";
 import { NoThread } from "@sharedComponents/feedback/NoThread";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 export default function Chat() {
     const [currentTab] = useAtom(currentTabAtom);
     const [selectedUser] = useAtom(selectedUserAtom);
+    const thread = useAtomValue(threadAtom);
 
     return (
         <Container>
@@ -39,7 +40,7 @@ export default function Chat() {
                         <IconButton icon={<IconDots />} className="p-1" />
                     </div>
 
-                    {selectedUser.id !== 0 ?
+                    {(selectedUser.id !== 0 || thread) ?
                         <ChatArea />
                         :
                         <NoThread />

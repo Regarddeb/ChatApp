@@ -36,12 +36,7 @@ export default function Login() {
             onSuccess: (res) => {
                 const { token, user } = res.data.user.original;
                 localStorage.setItem('token', token);
-                setUser((prev) => ({
-                    ...prev,
-                    token: token ?? prev.token,
-                    username: user?.username ?? prev.username,
-                    email: user?.email ?? prev.email,
-                }));
+                setUser(user);
                 Toast({ icon: 'success', title: 'Signed in successfully' });
                 navigate('/chat');
             },

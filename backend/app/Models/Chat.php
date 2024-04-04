@@ -43,4 +43,9 @@ class Chat extends Model
     {
         return $this->hasMany(Chat::class, 'reply_to', 'chat_id');
     }
+
+    public function seenBy(): HasMany
+    {
+        return $this->hasMany(Seen_By::class, 'chat_id');
+    }
 }

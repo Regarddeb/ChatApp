@@ -21,11 +21,14 @@ class ThreadController extends Controller
                 },
                 'user' => function ($query) use ($searchTerm) {
                     $query->whereNot('id', auth()->id())
-                        ->when($searchTerm, function ($query) use($searchTerm){
+                        ->when($searchTerm, function ($query) use ($searchTerm) {
                             $query->where('username', 'like', '%' . $searchTerm . '%');
                         });
-                }
+                },
+                'latestChat.seenBy.member'
             ])
+            ->join('members', 'members.thread_id', '=', 'threads.thread_id')
+            ->whereIn('members.user_id', [auth()->id()])
             ->paginate(15);
 
         return response()->json(['threads' => $threads], 200);

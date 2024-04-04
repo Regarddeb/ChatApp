@@ -13,24 +13,20 @@ class StoreUserAction
 {
     public function execute(array $userData): JsonResponse
     {
-        try {
-            $user = User::create([
-                'username' => $userData['username'],
-                'email' => $userData['email'],
-                'password' => bcrypt($userData['password']),
-                'display_picture_path' => null,
-                'active' => 1,
-            ]);
+        $user = User::create([
+            'username' => $userData['username'],
+            'email' => $userData['email'],
+            'password' => bcrypt($userData['password']),
+            'display_picture_path' => null,
+            'active' => 1,
+        ]);
 
-            if (!Auth::attempt(['email' => $user->email, 'password' => $user->password, 'active' => 1])) {
-                return response()->json(['message' => 'Authentication Failed'], 500);
-            }
-
-            $userResource = new UserResource($user);
-            $token = $user->createToken('token')->plainTextToken;
-            return response()->json(['user' => $userResource, 'token' => $token]);
-        } catch (Exception $e) {
-            return response()->json(['error', 'Something went wrong'], 500);
+        if (!Auth::attempt(['email' => $user->email, 'password' => $userData['password']])) {
+            throw new Exception('Authentication Failed');
         }
+
+        $userResource = new UserResource($user);
+        $token = $user->createToken('token')->plainTextToken;
+        return response()->json(['user' => $userResource, 'token' => $token]);
     }
 }

@@ -23,8 +23,6 @@ class Thread extends Model
         'member_count',
     ];
 
-    protected $hidden = ['laravel_through_key'];
-
     public function chat(): HasMany
     {
         return $this->hasMany(Chat::class, 'thread_id');
