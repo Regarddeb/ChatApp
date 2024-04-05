@@ -4,8 +4,11 @@ import { IconDotsVertical } from "@tabler/icons-react";
 import { userAtom } from '@atoms/userAtoms';
 import { IconButton } from '@components/button/IconButton';
 import { calculateTimeDifference } from '@utilities/timeDifference';
-import { Thread, SeenBy } from '@type/chatHistory';
-import { useAtomValue } from 'jotai';
+import { Thread } from '@type/chatHistory';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { User } from '@type/userTypes';
+import { threadAtom } from '@atoms/chatAtoms';
+import { selectedUserAtom } from '@atoms/chatAtoms';
 
 interface ChatInstanceProps {
     thread: Thread
@@ -13,29 +16,50 @@ interface ChatInstanceProps {
 
 export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
     const user = useAtomValue(userAtom);
+    const setThread = useSetAtom(threadAtom);
+    const setSelectedUser = useSetAtom(selectedUserAtom);
 
     const seen = thread.latest_chat.seen_by.some(seenBy => seenBy.member.user_id === user.id);
+    const threadActive = thread.member.some(member => member.user?.active === 1);
+
+    const handleThreadClick = () => {
+        setThread(thread.thread_id);
+        setSelectedUser(thread.user);
+    }
 
     return (
-        <div className={`w-full hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md ${!seen ? 'font-medium' : ''}`}>
+        <div
+            onClick={() => handleThreadClick()}
+            className={`w-full relative hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md ${!seen ? 'font-medium' : ''}`}
+        >
 
             <div className="w-2/12">
-                <div className="bg-gray-100 rounded-full w-[50px] h-[48px]">
+                <div className={`bg-gray-100 rounded-full w-[50px] h-[48px] border-2 ${threadActive ? 'border-green-500' : 'border-transparent'}`}>
                 </div>
             </div>
 
             <div className="flex pl-3 flex-col w-full truncate space-y-1 text-ellipsis py-1 mr-1">
 
-                <p className="text-sm text-start">{thread.user[0].username}</p>
-
-                <p className="text-[12px] font-light opacity-70 relative text-start">
-
-                    {thread.latest_chat.user ? thread.latest_chat.user.username + ' : ' : 'You : '}
-                    {thread.latest_chat.has_attachment ? 'Sent a photo' : thread.latest_chat.message}
-
-                    <span className="z-10 text-[10px] absolute right-0 bg-white pt-[2px] pl-[7px] group-hover:hidden">{calculateTimeDifference(thread.latest_chat.created_at)}</span>
-
+                <p className="text-sm text-start">
+                    {
+                        thread.user.map((user: User) => (
+                            user.username
+                        ))
+                    }
                 </p>
+
+                <div className={`text-[12px] font-light opacity-70 relative text-start ${!seen ? 'font-medium' : ''}`}>
+
+                    <p>
+                        {thread.latest_chat.user ? thread.latest_chat.user.username + ' : ' : 'You : '}
+                        {thread.latest_chat.has_attachment ? 'Sent a photo' : thread.latest_chat.message}
+                    </p>
+
+                    <span className={`z-10 text-[10px] absolute right-0 bottom-0 bg-white pt-[2px] pl-[7px] group-hover:hidden`}>
+                        {calculateTimeDifference(thread.latest_chat.created_at)}
+                    </span>
+
+                </div>
 
             </div>
 

@@ -13,6 +13,7 @@ import { selectedUserAtom, threadAtom } from "@atoms/chatAtoms";
 import { ThreadHeader } from "@sharedComponents/partials/ThreadHeader";
 import { NoThread } from "@sharedComponents/feedback/NoThread";
 import { useAtom, useAtomValue } from "jotai";
+import { Profile } from '@layouts/profile/Profile';
 
 export default function Chat() {
     const [currentTab] = useAtom(currentTabAtom);
@@ -30,6 +31,7 @@ export default function Chat() {
                 <div className="w-3/12 flex flex-col border-r p-2 space-y-3 min-h-full">
                     {currentTab === 'chat_history' && <ChatHistory />}
                     {currentTab === 'user_list' && <UserList />}
+                    {currentTab === 'profile' && <Profile />}
                 </div>
 
                 {/* chat area */}
@@ -40,7 +42,7 @@ export default function Chat() {
                         <IconButton icon={<IconDots />} className="p-1" />
                     </div>
 
-                    {(selectedUser.id !== 0 || thread) ?
+                    {(selectedUser[0].id !== 0 || thread) ?
                         <ChatArea />
                         :
                         <NoThread />

@@ -28,10 +28,7 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      console.error('Response Error Interceptor:', error.response.data)
+    if (error.response) {      
 
       // Handle different HTTP status codes
       const status = error.response.status

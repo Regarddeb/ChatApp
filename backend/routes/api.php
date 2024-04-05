@@ -25,13 +25,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(UserController::class)
     ->prefix('user')
     ->group(function () {
-        Route::post('store', 'store')->name('store');
-        Route::post('login', 'login')->name('login');
-        Route::post('logout', 'logout')->name('logout');
+        Route::post('store', 'store');
+        Route::post('login', 'login');
 
         Route::middleware(['auth:sanctum', LoggedIn::class])
             ->group(function () {
                 Route::get('all-users', 'allUsers');
+                Route::patch('logout', 'logout');
             });
     });
 
@@ -48,4 +48,5 @@ Route::controller(ThreadController::class)
     ->group(function () {
         Route::get('all-threads', 'index');
         Route::get('with/{user_id}', 'threadWith');
+        Route::get('all-chats/{thread_id}', 'allChats');
     });

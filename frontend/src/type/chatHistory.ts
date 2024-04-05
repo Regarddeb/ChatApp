@@ -19,6 +19,7 @@ export interface Thread {
   member_count: number
   latest_chat: LatestChat
   user: User[]
+  member: Member[]
 }
 
 export interface SeenBy {
@@ -33,4 +34,5 @@ export interface Member {
   user_id: number
   thread_id: number
   typing: number
+  user: null | User
 }

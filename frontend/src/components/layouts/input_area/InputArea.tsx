@@ -38,25 +38,30 @@ export const InputArea: React.FC = () => {
     };
 
     const handleChatSubmit: SubmitHandler<chatInput> = data => {
-        const formData = new FormData();
-        formData.append('message', data.message);
+        if (chatInputSchema.parse(data)) {
+            const formData = new FormData();
 
-        if (attachment) {
-            formData.append('attachment', attachment);
+            formData.append('message', data.message);
+
+            if (attachment) {
+                formData.append('attachment', attachment);
+            }
+            if (!thread) {
+                formData.append('user_id', selectedUser[0].id.toString());
+            }
+            formData.append('thread_id', (thread ?? 0).toString());
+
+            mutation.mutate(formData, {
+                onSuccess: (res) => {
+                    setThread(res.data.chat.thread_id);
+                    setValue('message', '');
+                    setAttachment(null);
+                },
+                onError: (err) => {
+                    console.log(err);
+                },
+            });
         }
-        formData.append('user_id', selectedUser.id.toString());
-        formData.append('thread_id', (thread ?? 0).toString());
-
-        mutation.mutate(formData, {
-            onSuccess: (res) => {
-                setThread(res.data.chat.thread_id)
-                setValue('message', '');
-                setAttachment(null);
-            },
-            onError: (err) => {
-                console.log(err);
-            },
-        });
     };
 
     return (
@@ -81,7 +86,7 @@ export const InputArea: React.FC = () => {
                         variant="default"
                         placeholder="Enter your message here..."
                         error={!!errors.message}
-                        disabled={selectedUser.id === 0}
+                        disabled={selectedUser[0].id === 0}
                         autoComplete='off'
                         onKeyDown={handleKeyPress}
                         {...field}
@@ -92,7 +97,7 @@ export const InputArea: React.FC = () => {
             <IconButton
                 icon={<IconSend2 size={20} />}
                 className="p-2 pl-2.5"
-                disabled={selectedUser.id === 0 || mutation.isLoading}
+                disabled={selectedUser[0].id === 0 || mutation.isLoading}
                 type='submit'
             />
 

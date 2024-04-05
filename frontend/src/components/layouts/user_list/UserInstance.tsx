@@ -30,7 +30,7 @@ export const UserInstance: React.FC<UserInstanceProps> = ({ user }) => {
     const handleUserClick = () => {
         refetch();
         if (isSuccess) {
-            setSelectedUser(user);
+            setSelectedUser([user]);
             setThread(data.length > 0 ? data[0].thread_id : null);
         }
     }

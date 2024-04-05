@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id('reaction_id');
             $table->string('reaction');
             $table->unsignedBigInteger('chat_id');
+            $table->unsignedBigInteger('member_id');
 
+            $table->foreign('member_id')->references('member_id')->on('members')->onDelete('cascade');
             $table->foreign('chat_id')->references('chat_id')->on('chats')->onDelete('cascade');
         });
     }

@@ -29,9 +29,14 @@ class Chat extends Model
         return $this->belongsTo(Thread::class, 'thread_id');
     }
 
-    public function user(): BelongsTo
+    public function user(): BelongsTo // sender
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function reaction(): HasMany
+    {
+        return $this->hasMany(Reaction::class, 'chat_id');
     }
 
     public function attachment(): HasOne
@@ -39,9 +44,9 @@ class Chat extends Model
         return $this->hasOne(Attachment::class, 'chat_id');
     }
 
-    public function reply(): HasMany
+    public function reply(): BelongsTo
     {
-        return $this->hasMany(Chat::class, 'reply_to', 'chat_id');
+        return $this->belongsTo(Chat::class, 'reply_to', 'chat_id');
     }
 
     public function seenBy(): HasMany

@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\User;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\LoginRequest;
 
 use App\Http\Traits\UserListTrait;
 use App\Http\Actions\User\StoreUserAction;
 use App\Http\Actions\User\AuthUserAction;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -48,5 +50,16 @@ class UserController extends Controller
         $searchTerm = $request->input('search');
         $users = $this->UserListTrait($searchTerm);
         return response()->json(['users' => $users]);
+    }
+
+    public function logout(): JsonResponse
+    {
+        $user = User::find(auth()->id());
+        $user->active = 0;
+        $user->save();
+        
+        Auth::guard('web')->logout();
+        
+        return response()->json(['message' => 'Logged out'], 200);
     }
 }

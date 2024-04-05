@@ -2,8 +2,8 @@ import { IconCircleFilled } from "@tabler/icons-react"
 import { calculateTimeDifference } from "@utilities/timeDifference"
 
 interface ActiveProp {
-    active: number,
-    logged_out: string
+    active: boolean,
+    logged_out: string | null
 }
 
 export const ActveIndicator: React.FC<ActiveProp> = ({ active, logged_out }) => {
@@ -13,7 +13,7 @@ export const ActveIndicator: React.FC<ActiveProp> = ({ active, logged_out }) => 
             {active ? (
                 <p className="flex items-center space-x-1"><IconCircleFilled size={12} style={{ color: '#29FF09' }} /><span>Active now</span></p>
             ) : (
-                    <p>Active {calculateTimeDifference(logged_out)}</p>
+                <p>Active {calculateTimeDifference(logged_out)}</p>
             )}
         </div>
     )
