@@ -36,7 +36,7 @@ export const ChatArea: React.FC = () => {
                 <ChatLoading />
             ) : null}
 
-            {data?.pages[0].chats.data.length === 0 ? (
+            {(!isLoading && data?.pages[0].chats.data.length === 0) ? (
                 <NoChat />
             ) : (
                 <>
