@@ -17,12 +17,12 @@ export const Profile = () => {
         axios.patch('api/user/logout')
             .then((res) => {
                 queryClient.invalidateQueries();
+                window.location.href = '/';
+                Toast({ icon: 'success', title: res.data.message });
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 setSelectedUser([UserInitial]);
                 setThread(null);
-                window.location.href = '/';
-                Toast({ icon: 'success', title: res.data.message });
             })
             .catch(() => {
                 Toast({ icon: 'error', title: 'Logout Failed' });

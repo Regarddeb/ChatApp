@@ -31,7 +31,7 @@ export const UserInstance: React.FC<UserInstanceProps> = ({ user }) => {
         refetch();
         if (isSuccess) {
             setSelectedUser([user]);
-            setThread(data.length > 0 ? data[0].thread_id : null);
+            setThread(data.threads.length > 0 ? data.threads[0].thread_id : null);
         }
     }
 
@@ -52,5 +52,3 @@ export const UserInstance: React.FC<UserInstanceProps> = ({ user }) => {
         </div>
     );
 };
-
-

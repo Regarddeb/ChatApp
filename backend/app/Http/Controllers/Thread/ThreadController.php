@@ -26,7 +26,9 @@ class ThreadController extends Controller
                     $query->whereNot('id', auth()->id());
                 },
                 'latestChat.seenBy.member',
-                'member.user'
+                'member.user' => function ($query) {
+                    $query->whereNot('id', auth()->id());
+                }
             ])
             ->join('members', 'members.thread_id', '=', 'threads.thread_id')
             ->join('users', 'users.id', '=', 'members.user_id')
@@ -36,6 +38,12 @@ class ThreadController extends Controller
                     ->where('username', 'like', '%' . $searchTerm . '%');
             })
             ->whereIn('members.user_id', [auth()->id()])
+            ->select('threads.*')
+            ->orderByRaw("(
+                            SELECT MAX(chats.created_at)
+                            FROM chats
+                            WHERE chats.thread_id = threads.thread_id
+                        ) DESC")
             ->paginate(15);
 
         return response()->json(['threads' => $threads], 200);
@@ -57,11 +65,14 @@ class ThreadController extends Controller
         $chats = Chat::with([
             'attachment',
             'seenBy',
-            'reply',
-            'user',
+            'reply.user',
+            'user' => function ($query) {
+                $query->whereNot('id', auth()->id());
+            },
             'reaction'
         ])
             ->where('thread_id', $thread_id)
+            ->orderBy('created_at', 'desc')
             ->paginate(20);
 
         return response()->json(['chats' => $chats], 200);

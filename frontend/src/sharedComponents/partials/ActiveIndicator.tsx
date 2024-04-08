@@ -2,7 +2,7 @@ import { IconCircleFilled } from "@tabler/icons-react"
 import { calculateTimeDifference } from "@utilities/timeDifference"
 
 interface ActiveProp {
-    active: boolean,
+    active: number,
     logged_out: string | null
 }
 

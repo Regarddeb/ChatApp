@@ -4,7 +4,6 @@ namespace App\Http\Actions\User;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class AuthUserAction
@@ -20,20 +19,16 @@ class AuthUserAction
             'password' => $credentials['password'],
         ];
 
-        try {
-            if (Auth::attempt($credentials)) {
-                $user = User::find(Auth::user()->id);
+        if (Auth::attempt($credentials)) {
+            $user = User::find(Auth::user()->id);
+            $user->active = 1;
+            $user->save();
 
-                $token = $user->createToken('token')->plainTextToken;
-                $userResource = new UserResource($user);
-                return response()->json(['user' => $userResource, 'token' => $token]);
-            } else {
-                // Handle invalid credentials
-                return response()->json(['error' => 'Invalid credentials'], 401);
-            }
-        } catch (\Exception $e) {
-            // Handle other exceptions
-            return response()->json(['error' => 'Internal Server Error'], 500);
+            $token = $user->createToken('token')->plainTextToken;
+            $userResource = new UserResource($user);
+            return response()->json(['user' => $userResource, 'token' => $token]);
+        } else {
+            return false;
         }
     }
 }

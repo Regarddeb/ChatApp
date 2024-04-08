@@ -8,7 +8,7 @@ export const ThreadHeader = () => {
     const selectedUser = useAtomValue(selectedUserAtom);
     const logged_out = useRef<string | null>(null);
 
-    const active = selectedUser.some((user) => user.active === 1);
+    const active = selectedUser.some((user) => user.active);
 
     if (!active) {
         const sortedUserData = selectedUser.sort((a, b) => {
@@ -34,7 +34,7 @@ export const ThreadHeader = () => {
                         <span className="text-sm font-medium opacity-80">
                             {selectedUser.map((user: User) => (user.username))}
                         </span>
-                        <ActveIndicator active={active} logged_out={logged_out.current} />
+                        <ActveIndicator active={active ? 1 : 0} logged_out={logged_out.current} />
                     </div>
                 </>
             }

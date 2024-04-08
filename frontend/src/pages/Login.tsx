@@ -142,7 +142,7 @@ export default function Login() {
                         <Link to="signup" className='w-8/12'>
                             <Button
                                 variant="subtle"
-                                className='hover:bg-primary hover:bg-opacity-90 hover:text-primary w-full'
+                                className='hover:bg-primary hover:bg-opacity-20 w-full'
                                 radius="md"
                                 color='#7a84ba'
                             >
