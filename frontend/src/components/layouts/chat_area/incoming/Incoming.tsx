@@ -1,7 +1,8 @@
-import { IconArrowBackUp, IconMoodSmile } from "@tabler/icons-react"
-
+import { Buttons } from "../Buttons"
 import { ChatData } from "@type/chat"
 import { IncomingReplyHeader } from "./IncomingReplyHeader"
+import { AttachmentDisplay } from "./AttachmentDisplay"
+import no_dp from '@assets/images/illustration/no_dp.svg';
 
 interface IncomingProps {
     chatData: ChatData
@@ -15,7 +16,11 @@ export const Incoming: React.FC<IncomingProps> = ({ chatData }) => {
             <div className="flex w-full items-end space-x-1 mb-1">
 
                 {/* img */}
-                <div className="bg-gray-200 h-[30px] w-[30px] rounded-full"></div>
+                <img
+                    src={`${chatData.user?.display_picture_path ? import.meta.env.VITE_API_URL + '/storage/' + chatData.user?.display_picture_path : no_dp}`}
+                    alt=""
+                    className="bg-gray-200 h-[30px] w-[30px] object-cover border rounded-full"
+                />
 
                 {/* chat */}
                 <div className="w-[65%] flex flex-col">
@@ -32,10 +37,13 @@ export const Incoming: React.FC<IncomingProps> = ({ chatData }) => {
                                 </p>
                             </div>
 
-                            <div className="space-x-2 flex opacity-0 group-hover:opacity-100">
-                                <button className="flex p-1 rounded-full hover:bg-gray-100 opacity-75 hover:opacity-100"><IconArrowBackUp size={17} /></button>
-                                <button className="flex p-1 rounded-full hover:bg-gray-100 opacity-75 hover:opacity-100"><IconMoodSmile size={17} /></button>
-                            </div>
+                            {!chatData.has_attachment ?
+                                <Buttons
+                                    chat_id={chatData.chat_id}
+                                    message={chatData.message}
+                                />
+                                : null
+                            }
 
                         </div>
                     </div>
@@ -44,9 +52,15 @@ export const Incoming: React.FC<IncomingProps> = ({ chatData }) => {
 
             </div>
 
-            <img className="rounded-lg bg-gray-400 ml-9 aspect-square w-52 h-52 max-w-52 max-h-52">
+            {chatData.has_attachment ?
+                <AttachmentDisplay
+                    attachment={chatData.attachment}
+                    chat_id={chatData.chat_id}
+                    message={chatData.message}
+                />
+                : null
+            }
 
-            </img>
         </div>
     )
 }

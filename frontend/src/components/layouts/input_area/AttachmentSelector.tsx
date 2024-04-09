@@ -40,7 +40,7 @@ export const AttachmentSelector: React.FC<AttachmentSelectorProps> = ({ setAttac
                 icon={attachment ? <IconX size={19} /> : <IconCirclePlus size={19} />}
                 className="p-2"
                 onClick={attachment ? handleRemoveFile : handleAddFileClick}
-                disabled={selectedUser.id === 0}
+                disabled={selectedUser[0].id === 0}
             />
             
             <input

@@ -3,6 +3,7 @@ import { ActveIndicator } from '@sharedComponents/partials/ActiveIndicator';
 import { useAtomValue } from "jotai";
 import { User } from "@type/userTypes";
 import { useRef } from "react";
+import no_dp from '@assets/images/illustration/no_dp.svg';
 
 export const ThreadHeader = () => {
     const selectedUser = useAtomValue(selectedUserAtom);
@@ -29,7 +30,13 @@ export const ThreadHeader = () => {
                 </>
                 :
                 <>
-                    <div className="rounded-full w-[35px] h-[35px] bg-gray-200"></div>
+                    <img
+                        src={`${selectedUser[0].display_picture_path ?
+                                import.meta.env.VITE_API_URL + '/storage/' + selectedUser[0].display_picture_path
+                                : no_dp
+                            }`}
+                        className="rounded-full w-[35px] h-[35px] bg-gray-200 object-cover border"
+                    />
                     <div className="flex flex-col items-start p-1 rounded-md">
                         <span className="text-sm font-medium opacity-80">
                             {selectedUser.map((user: User) => (user.username))}
@@ -38,7 +45,7 @@ export const ThreadHeader = () => {
                     </div>
                 </>
             }
-        </div>
+        </div >
     )
 
 }

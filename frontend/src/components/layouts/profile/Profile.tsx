@@ -1,23 +1,28 @@
 import { Button } from "@mantine/core"
 import { useQueryClient } from 'react-query';
+import { useNavigate } from "react-router-dom";
 
+import { DisplayPic } from "./DisplayPic";
 import axios from '@utilities/axios';
 import Toast from '@sharedComponents/feedback/Toast';
 import { selectedUserAtom } from "@atoms/chatAtoms";
 import { threadAtom } from "@atoms/chatAtoms";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { UserInitial } from "@type/userInitialValues";
+import { userAtom } from "@atoms/userAtoms";
 
-export const Profile = () => {
+export const Profile: React.FC = () => {
     const queryClient = useQueryClient();
     const setThread = useSetAtom(threadAtom);
     const setSelectedUser = useSetAtom(selectedUserAtom);
+    const navigate = useNavigate();
+    const user = useAtomValue(userAtom);
 
     const handleLogout = () => {
         axios.patch('api/user/logout')
             .then((res) => {
                 queryClient.invalidateQueries();
-                window.location.href = '/';
+                navigate('/');
                 Toast({ icon: 'success', title: res.data.message });
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
@@ -30,24 +35,24 @@ export const Profile = () => {
     }
 
     return (
-        <div className="w-full h-full flex flex-col py-10">
-            <div className="w-full flex flex-col justify-center items-center space-y-4">
-                <div className="h-44 w-44 rounded-full bg-gray-200"></div>
-                <div className="w-full flex flex-col space-y-1">
+        <div className="w-full h-full flex flex-col pt-10">
+            <div className="w-full h-full flex flex-col items-center justify-between">
+
+                <div className="flex flex-col space-y-4 items-center">
+                    <DisplayPic />
+    
+                    <div className="w-full text-center space-y-3">
+                        <p className="text-3xl font-semibold opacity-70">{user.username}</p>
+                        <p className="opacity-70">{user.active ? 'Active Now' : 'Offline'}</p>
+                    </div>
+                </div>
+
+                <div className="w-full flex flex-col">
                     <Button
                         variant="subtle"
-                        className='hover:bg-primary hover:bg-opacity-90 hover:text-white w-full'
+                        className='hover:bg-[#F4A7AC] bg-[#EC777E] text-white hover:text-[#B31220] hover:bg-opacity-20 w-full'
                         radius="md"
-                        color='#7a84ba'
-                    >
-                        Change Profile Picture
-                    </Button>
-                    <Button
-                        variant="subtle"
-                        className='hover:bg-[#B00000] hover:bg-opacity-90 hover:text-white w-full'
-                        radius="md"
-                        color="#B00000"
-                        onClick={handleLogout} // Use the memoized handleLogout function
+                        onClick={handleLogout}
                     >
                         Logout
                     </Button>

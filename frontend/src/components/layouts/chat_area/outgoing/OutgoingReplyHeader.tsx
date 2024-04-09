@@ -12,7 +12,7 @@ export const OutgoingReplyHeader: React.FC<OutgoingReplyHeaderProps> = ({ reply 
     const user = useAtomValue(userAtom);
 
     return (
-        <div className="text-end w-[70%] flex flex-col items-end">
+        <div className="text-end w-full flex flex-col items-end">
             <p className="text-xs opacity-80 flex items-center space-x-1 mb-1">
                 <IconArrowBackUp size={15} /><span>You replied to {reply.user.id === user.id ? 'yourself' : reply.user.username}</span>
             </p>

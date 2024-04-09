@@ -32,6 +32,7 @@ Route::controller(UserController::class)
             ->group(function () {
                 Route::get('all-users', 'allUsers');
                 Route::patch('logout', 'logout');
+                Route::post('changeDP', 'changeDP');
             });
     });
 

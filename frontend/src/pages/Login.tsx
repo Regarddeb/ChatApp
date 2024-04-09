@@ -31,7 +31,7 @@ export default function Login() {
     });
 
     const mutation = useMutation(
-        (data: LoginValues) => axios.post('api/user/login', loginSchema.parse(data)),
+        (data: LoginValues) => axios.post('api/user/login', data),
         {
             onSuccess: (res) => {
                 const { token, user } = res.data.user.original;

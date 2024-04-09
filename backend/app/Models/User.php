@@ -62,4 +62,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread_Deleted_By::class, 'id');
     }
+
+    
 }

@@ -26,8 +26,11 @@ class ThreadController extends Controller
                     $query->whereNot('id', auth()->id());
                 },
                 'latestChat.seenBy.member',
-                'member.user' => function ($query) {
-                    $query->whereNot('id', auth()->id());
+                'member' => function ($query) {
+                    $query->with(['user' => function ($subQuery) {
+                        $subQuery->whereNot('id', auth()->id());
+                    }])
+                        ->whereNot('user_id', auth()->id());
                 }
             ])
             ->join('members', 'members.thread_id', '=', 'threads.thread_id')

@@ -6,19 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Requests\User\LoginRequest;
+use App\Http\Requests\User\ChangeDPRequest;
 
-use App\Http\Traits\UserListTrait;
 use App\Http\Actions\User\StoreUserAction;
 use App\Http\Actions\User\AuthUserAction;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Actions\User\ChangeDPAction;
 
 class UserController extends Controller
 {
-    use UserListTrait;
     public function store(UserRequest $userRequest): JsonResponse
     {
         return DB::transaction(function () use ($userRequest) {
@@ -48,7 +48,14 @@ class UserController extends Controller
     public function allUsers(Request $request): JsonResponse
     {
         $searchTerm = $request->input('search');
-        $users = $this->UserListTrait($searchTerm);
+
+        $users = User::when($searchTerm, function ($query) use ($searchTerm) {
+            $query->where('username', 'LIKE', '%' . $searchTerm . '%');
+        })
+            ->whereNot('id', auth()->id())
+            ->orderBy('active', 'desc')
+            ->paginate(15);
+
         return response()->json(['users' => $users]);
     }
 
@@ -57,9 +64,20 @@ class UserController extends Controller
         $user = User::find(auth()->id());
         $user->active = 0;
         $user->save();
-        
+
         Auth::guard('web')->logout();
-        
+
         return response()->json(['message' => 'Logged out'], 200);
+    }
+
+    public function changeDP(ChangeDPRequest $request): JsonResponse
+    {
+        $image = $request->file('dpFile');
+        return DB::transaction(function () use ($image) {
+            $changeDp = new ChangeDPAction($image);
+            $displayPicPath = $changeDp->execute();
+
+            return response()->json(['message' => 'Display picture updated.', 'path' => $displayPicPath], 200);
+        });
     }
 }

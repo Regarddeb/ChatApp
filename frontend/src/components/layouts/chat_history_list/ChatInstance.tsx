@@ -9,6 +9,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { User } from '@type/userTypes';
 import { threadAtom } from '@atoms/chatAtoms';
 import { selectedUserAtom } from '@atoms/chatAtoms';
+import no_dp from '@assets/images/illustration/no_dp.svg';
 
 interface ChatInstanceProps {
     thread: Thread
@@ -30,11 +31,20 @@ export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
     return (
         <div
             onClick={() => handleThreadClick()}
-            className={`w-full relative hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-1 flex items-center rounded-md ${!seen ? 'font-medium' : ''}`}
+            className={`w-full relative hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-3 flex items-center rounded-md ${!seen ? 'font-medium' : ''}`}
         >
 
             <div className="w-2/12">
-                <div className={`bg-gray-100 rounded-full w-[50px] h-[48px] border-2 ${threadActive ? 'border-green-500' : 'border-transparent'}`}>
+                <div
+                    style={{
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundImage: thread.member[0].user?.display_picture_path ?
+                            `url(${import.meta.env.VITE_API_URL}/storage/${thread.member[0].user?.display_picture_path})` :
+                            `url(${no_dp})`
+                    }}
+                    className={`bg-gray-100 rounded-full w-[50px] h-[48px] border-2 ${threadActive ? 'ring ring-offset-2 ring-green-500' : 'border-transparent'}`}
+                >
                 </div>
             </div>
 
