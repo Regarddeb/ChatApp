@@ -46,7 +46,7 @@ class ThreadController extends Controller
                             SELECT MAX(chats.created_at)
                             FROM chats
                             WHERE chats.thread_id = threads.thread_id
-                        ) DESC")
+                        ) DESC") // sorts the list of threads based on the latest chat in them
             ->paginate(15);
 
         return response()->json(['threads' => $threads], 200);
@@ -68,11 +68,14 @@ class ThreadController extends Controller
         $chats = Chat::with([
             'attachment',
             'seenBy',
-            'reply.user',
+            'reply.user.member',
             'user' => function ($query) {
                 $query->whereNot('id', auth()->id());
             },
-            'reaction'
+            'reaction',
+            'thread.member' => function ($query) {
+                $query->where('user_id', auth()->id());
+            }
         ])
             ->where('thread_id', $thread_id)
             ->orderBy('created_at', 'desc')

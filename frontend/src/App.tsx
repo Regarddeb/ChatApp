@@ -2,9 +2,7 @@ import { lazy, Suspense, FunctionComponent } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css'
 import '@mantine/core/styles.css';
-import { useAtom } from 'jotai';
 
-import { userAtom } from '@atoms/userAtoms';
 import { Loader } from '@sharedComponents/loader/PageLoading';
 
 const Login = lazy(() => import('@pages/Login'));

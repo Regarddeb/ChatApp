@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@hookform/resolvers": "^3.3.4",
     "@mantine/core": "^7.3.2",
     "@mantine/form": "^7.3.2",
@@ -20,6 +22,7 @@
     "cache": "^3.0.0",
     "clean": "^4.0.2",
     "dayjs": "^1.11.10",
+    "emoji-mart": "^5.5.2",
     "jotai": "^2.6.2",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",

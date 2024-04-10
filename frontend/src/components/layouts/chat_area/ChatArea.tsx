@@ -46,7 +46,7 @@ export const ChatArea: React.FC = () => {
 
     return (
         <div
-            className="w-full h-full overflow-y-auto flex flex-col-reverse"
+            className="w-full h-full overflow-y-auto flex flex-col-reverse py-2"
             onScroll={debouncedHandleScroll}
         >
             {isLoading ? (

@@ -1,6 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 #root {
   margin: 0 auto;
@@ -9,43 +9,43 @@
 
 /* font config */
 @font-face {
-  font-family: "thin";
-  src: url("assets/fonts/Poppins-Thin.ttf");
+  font-family: 'thin';
+  src: url('assets/fonts/Poppins-Thin.ttf');
 }
 
 @font-face {
-  font-family: "extralight";
-  src: url("assets/fonts/Poppins-ExtraLight.ttf");
+  font-family: 'extralight';
+  src: url('assets/fonts/Poppins-ExtraLight.ttf');
 }
 
 @font-face {
-  font-family: "light";
-  src: url("assets/fonts/Poppins-Light.ttf");
+  font-family: 'light';
+  src: url('assets/fonts/Poppins-Light.ttf');
 }
 
 @font-face {
-  font-family: "regular";
-  src: url("assets/fonts/Poppins-Regular.ttf");
+  font-family: 'regular';
+  src: url('assets/fonts/Poppins-Regular.ttf');
 }
 
 @font-face {
-  font-family: "medium";
-  src: url("assets/fonts/Poppins-Medium.ttf");
+  font-family: 'medium';
+  src: url('assets/fonts/Poppins-Medium.ttf');
 }
 
 @font-face {
-  font-family: "semibold";
-  src: url("assets/fonts/Poppins-SemiBold.ttf");
+  font-family: 'semibold';
+  src: url('assets/fonts/Poppins-SemiBold.ttf');
 }
 
 @font-face {
-  font-family: "bold";
-  src: url("assets/fonts/Poppins-Bold.ttf");
+  font-family: 'bold';
+  src: url('assets/fonts/Poppins-Bold.ttf');
 }
 
 @font-face {
-  font-family: "extrabold";
-  src: url("assets/fonts/Poppins-ExtraBold.ttf");
+  font-family: 'extrabold';
+  src: url('assets/fonts/Poppins-ExtraBold.ttf');
 }
 
 @layer base {
@@ -95,7 +95,6 @@
   background: linear-gradient(170deg, rgb(113, 122, 173), rgb(90, 87, 148));
 }
 
-
 .mantine-Input-section {
-  width: '100px'
+  width: '100px';
 }
