@@ -12,7 +12,7 @@ interface AttachmentProps {
 export const AttachmentDisplay: React.FC<AttachmentProps> = ({ attachment, chat_id, message, reactions }) => {
     return (
         <div className="flex items-center">
-            <Buttons chat_id={chat_id} message={message} />
+            <Buttons chat_id={chat_id} message={message} reactions={reactions} />
 
             <div className="relative">
                 <img
@@ -21,7 +21,7 @@ export const AttachmentDisplay: React.FC<AttachmentProps> = ({ attachment, chat_
                     className="rounded-lg bg-gray-400 max-w-52 max-h-52 aspect-square object-cover hover:opacity-80 cursor-pointer"
                 />
 
-                {reactions.length !== 0 ? <ChatReactions classes="right-0 mt-[-5px]" /> : null}
+                {reactions.length !== 0 ? <ChatReactions classes="right-0 mt-[-5px]" reactions={reactions} /> : null}
             </div>
         </div>
     )

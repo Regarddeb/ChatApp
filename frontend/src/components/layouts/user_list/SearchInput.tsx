@@ -1,6 +1,6 @@
 import { userSearchActiveAtom } from "@atoms/menuAtoms";
 import { searchTermAtom } from "@atoms/userListAtoms";
-import { IconButton } from "@components/button/IconButton";
+import { IconButton } from "@sharedComponents/button/IconButton";
 
 import { ChangeEvent } from 'react';
 import { useAtom } from 'jotai';

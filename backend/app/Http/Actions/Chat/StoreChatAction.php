@@ -4,7 +4,7 @@ namespace App\Http\Actions\Chat;
 
 use App\Http\Actions\Chat\CreateThreadAction;
 use App\Http\Actions\Chat\StoreAttachmentAction;
-use App\Http\Actions\Chat\StoreMembersAction;
+use App\Http\Actions\Member\StoreMembersAction;
 use App\Http\Actions\Chat\SeenByAction;
 use App\Models\Chat;
 

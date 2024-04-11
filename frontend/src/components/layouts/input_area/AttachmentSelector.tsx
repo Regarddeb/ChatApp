@@ -2,7 +2,7 @@ import { IconCirclePlus, IconX } from "@tabler/icons-react";
 import { useRef, ChangeEvent, MouseEvent } from 'react';
 import { useAtomValue } from "jotai";
 
-import { IconButton } from "@components/button/IconButton";
+import { IconButton } from "@sharedComponents/button/IconButton";
 import { selectedUserAtom } from '@atoms/chatAtoms';
 
 interface AttachmentSelectorProps {

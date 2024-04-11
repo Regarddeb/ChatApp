@@ -2,7 +2,7 @@ import React from 'react';
 import { IconDotsVertical } from "@tabler/icons-react";
 
 import { userAtom } from '@atoms/userAtoms';
-import { IconButton } from '@components/button/IconButton';
+import { IconButton } from '@sharedComponents/button/IconButton';
 import { calculateTimeDifference } from '@utilities/timeDifference';
 import { Thread } from '@type/chatHistory';
 import { useAtomValue, useSetAtom } from 'jotai';

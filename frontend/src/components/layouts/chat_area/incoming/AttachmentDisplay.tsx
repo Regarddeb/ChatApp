@@ -18,9 +18,9 @@ export const AttachmentDisplay: React.FC<AttachmentProps> = ({ attachment, chat_
                     alt="attachment"
                     className="rounded-lg bg-gray-400 max-w-52 max-h-52 aspect-square object-cover hover:opacity-80 cursor-pointer"
                 />
-                {reactions.length !== 0 ? <ChatReactions classes="left-0 mt-[-4px]" /> : null}
+                {reactions.length !== 0 ? <ChatReactions classes="left-0 mt-[-4px]" reactions={reactions} /> : null}
             </div>
-            {reactions.length !== 0 ? <Buttons chat_id={chat_id} message={message} /> : null}
+            <Buttons chat_id={chat_id} message={message} reactions={reactions} />
         </div>
     )
 }

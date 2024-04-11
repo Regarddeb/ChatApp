@@ -5,7 +5,7 @@ import Header from "@sharedComponents/layout/Header";
 import { InputArea } from "@layouts/input_area/InputArea";
 import { ChatArea } from "@layouts/chat_area/ChatArea";
 import { ChatHistory } from "@layouts/chat_history_list/ChatHistory";
-import { IconButton } from "@components/button/IconButton";
+import { IconButton } from "@sharedComponents/button/IconButton";
 import { Sidemenu } from "@sharedComponents/layout/Sidemenu";
 import { UserList } from "@components/layouts/user_list/UserList";
 import { currentTabAtom } from "@atoms/menuAtoms";

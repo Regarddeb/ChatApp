@@ -6,7 +6,7 @@ import { useInfiniteQuery } from "react-query";
 import axios from "@utilities/axios";
 import { ChatInstance } from "./ChatInstance";
 import { MenuLoading } from "@sharedComponents/loader/MenuLoading";
-import { IconButton } from '@components/button/IconButton';
+import { IconButton } from '@sharedComponents/button/IconButton';
 import { searchChatHistoryActiveAtom } from '@atoms/menuAtoms';
 import { searchChatHistoryTermAtom } from '@atoms/chatHistoryAtoms';
 import { SearchInput } from "./SearchInput";

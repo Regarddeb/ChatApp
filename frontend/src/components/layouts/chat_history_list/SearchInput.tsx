@@ -4,7 +4,7 @@ import { ChangeEvent } from 'react';
 
 import { searchChatHistoryActiveAtom } from '@atoms/menuAtoms';
 import { searchChatHistoryTermAtom } from '@atoms/chatHistoryAtoms';
-import { IconButton } from '@components/button/IconButton';
+import { IconButton } from '@sharedComponents/button/IconButton';
 import { useAtom } from 'jotai';
 
 export const SearchInput = () => {

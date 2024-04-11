@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "react-query";
-import { useAtomValue } from "jotai";
-import React, { useCallback } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import React, { useCallback, useEffect } from "react";
 
 import axios from '@utilities/axios';
 import { threadAtom } from "@atoms/chatAtoms";
@@ -9,9 +9,11 @@ import { Outgoing } from "./outgoing/Outgoing";
 import { ChatLoading } from "@sharedComponents/loader/ChatLoading";
 import { NoChat } from "@sharedComponents/feedback/NoChat";
 import { ChatData } from "@type/chat";
+import { memberAtom } from "@atoms/chatAtoms";
 
 export const ChatArea: React.FC = () => {
     const thread_id = useAtomValue(threadAtom);
+    const setMemberID = useSetAtom(memberAtom);
 
     const debounce = (func: Function, delay: number) => {
         let timeoutId: ReturnType<typeof setTimeout>;
@@ -44,6 +46,12 @@ export const ChatArea: React.FC = () => {
         [fetchNextPage, hasNextPage]
     );
 
+    useEffect(() => {
+        if (data && data.pages.length > 0) {
+            setMemberID(data.pages[0].chats.data[0].thread.member[0].member_id);
+        }
+    }, [data, setMemberID]);
+
     return (
         <div
             className="w-full h-full overflow-y-auto flex flex-col-reverse py-2"
@@ -56,17 +64,19 @@ export const ChatArea: React.FC = () => {
             {(!isLoading && data?.pages[0].chats.data.length === 0) ? (
                 <NoChat />
             ) : (
-                data?.pages.map((page, index) => (
-                    <React.Fragment key={index}>
-                        {page.chats.data.map((chatData: ChatData) => (
-                            chatData.user ? (
-                                <Incoming key={chatData.chat_id} chatData={chatData} />
-                            ) : (
-                                <Outgoing key={chatData.chat_id} chatData={chatData} />
-                            )
-                        ))}
-                    </React.Fragment>
-                ))
+                <>
+                    {data?.pages.map((page, index) => (
+                        <React.Fragment key={index}>
+                            {page.chats.data.map((chatData: ChatData) => (
+                                chatData.user ? (
+                                    <Incoming key={chatData.chat_id} chatData={chatData} />
+                                ) : (
+                                    <Outgoing key={chatData.chat_id} chatData={chatData} />
+                                )
+                            ))}
+                        </React.Fragment>
+                    ))}
+                </>
             )
             }
         </div>

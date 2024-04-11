@@ -1,13 +1,16 @@
-import { ChatIconButton } from '@components/button/ChatIconButton';
 import Picker from '@emoji-mart/react';
 import { Menu } from "@mantine/core";
 import { IconPlus } from '@tabler/icons-react';
+import { Emoji } from '@type/emojiType';
 
 interface EmojiPickerProps {
     setCloseOnClickOutside: (opened: boolean) => void;
+    handleReactionClick: (unifiedCode: string) => void;
 }
 
-export const EmojiPicker: React.FC<EmojiPickerProps> = ({ setCloseOnClickOutside }) => {
+export const EmojiPicker: React.FC<EmojiPickerProps> = ({ setCloseOnClickOutside, handleReactionClick }) => {
+
+    const classStyle = 'flex p-[7px] pr-[6px] rounded-full hover:bg-gray-100 opacity-75 hover:opacity-100';
 
     return (
         <div>
@@ -21,16 +24,16 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({ setCloseOnClickOutside
                 onClose={() => setCloseOnClickOutside(true)}
             >
                 <Menu.Target>
-                    <ChatIconButton classes='p-[7px]' onClick={() => { }}>
-                        <IconPlus size={20} />
-                    </ChatIconButton>
+                    <button className={classStyle}>
+                        <IconPlus size={19} />
+                    </button>
                 </Menu.Target>
                 <Menu.Dropdown>
                     <Menu.Item>
                         <div>
                             <Picker
                                 set='native'
-                                onEmojiSelect={console.log}
+                                onEmojiSelect={(data: Emoji) => handleReactionClick(data.unified)}
                                 previewPosition='none'
                                 maxFrequentRows={1}
                             />

@@ -41,6 +41,7 @@ Route::controller(ChatController::class)
     ->prefix('chat')
     ->group(function () {
         Route::post('send', 'send');
+        Route::post('react', 'storeReaction');
     });
 
 Route::controller(ThreadController::class)

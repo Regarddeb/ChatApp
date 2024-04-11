@@ -1,7 +1,9 @@
-import { atom } from "jotai";
-import { UserInitial } from "@type/userInitialValues";
-import { User } from "@type/userTypes";
+import { atom } from 'jotai'
+import { UserInitial } from '@type/userInitialValues'
+import { User } from '@type/userTypes'
 
-export const selectedUserAtom = atom<User[]>([UserInitial]);
+export const selectedUserAtom = atom<User[]>([UserInitial])
 
-export const threadAtom = atom<number | null>(null);
+export const threadAtom = atom<number | null>(null)
+
+export const memberAtom = atom<number>(0)

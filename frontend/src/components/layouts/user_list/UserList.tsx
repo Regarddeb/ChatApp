@@ -1,6 +1,6 @@
 import React from "react";
 import { IconSquarePlus } from "@tabler/icons-react";
-import { IconButton } from "@components/button/IconButton";
+import { IconButton } from "@sharedComponents/button/IconButton";
 import { useAtom } from "jotai";
 import { useInfiniteQuery } from "react-query";
 

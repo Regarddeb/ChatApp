@@ -23,8 +23,8 @@ export const Outgoing: React.FC<OutgoingProps> = ({ chatData }) => {
                                 {chatData.message}
                             </p>
                         </div>
-                        {chatData.reaction.length !== 0 ?
-                            <ChatReactions classes="mt-[-2px] right-0" />
+                        {chatData.reaction.length !== 0 && !chatData.has_attachment ?
+                            <ChatReactions classes="mt-[-2px] right-0" reactions={chatData.reaction} />
                             : null
                         }
                     </div>
@@ -32,6 +32,7 @@ export const Outgoing: React.FC<OutgoingProps> = ({ chatData }) => {
                         <Buttons
                             chat_id={chatData.chat_id}
                             message={chatData.message}
+                            reactions={chatData.reaction}
                         />
                         : null
                     }

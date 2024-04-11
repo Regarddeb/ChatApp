@@ -7,7 +7,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import axios from '@utilities/axios';
 import { useMutation } from 'react-query';
 
-import { IconButton } from "@components/button/IconButton";
+import { IconButton } from "@sharedComponents/button/IconButton";
 import { selectedUserAtom, threadAtom } from '@atoms/chatAtoms';
 import chatInput from '@type/chatInput';
 import { chatInputSchema } from '@type/chatInput';

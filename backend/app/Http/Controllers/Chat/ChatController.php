@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Chat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
+
 use App\Http\Requests\Chat\StoreChatRequest;
 use App\Http\Actions\Chat\StoreChatAction;
-use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Chat\StoreReactionRequest;
+use App\Http\Actions\Reaction\StoreReactionAction;
 
 class ChatController extends Controller
 {
@@ -24,5 +27,19 @@ class ChatController extends Controller
 
             return response()->json(['chat' => $chat]);
         }, 2);
+    }
+
+    public function storeReaction(StoreReactionRequest $request): JsonResponse
+    {
+        return DB::transaction(function () use ($request) {
+            $chat_id = $request->input('chat_id');
+            $reaction = $request->input('reaction');
+            $thread_id = $request->input('thread_id');
+
+            $storeReactionAction = new StoreReactionAction($chat_id, $reaction, $thread_id);
+            $storeReactionAction->execute();
+
+            return response()->json(['request' => [$chat_id, $reaction, $thread_id]]);
+        });
     }
 }

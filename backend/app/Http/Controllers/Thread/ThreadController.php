@@ -72,11 +72,12 @@ class ThreadController extends Controller
             'user' => function ($query) {
                 $query->whereNot('id', auth()->id());
             },
-            'reaction',
-            'thread.member' => function ($query) {
-                $query->where('user_id', auth()->id());
-            }
+            'reaction'
         ])
+            ->with(['thread.member' => function ($query) { {
+                    $query->where('user_id', auth()->id());
+                }
+            }])
             ->where('thread_id', $thread_id)
             ->orderBy('created_at', 'desc')
             ->paginate(20);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton } from "@components/button/IconButton";
+import { IconButton } from "@sharedComponents/button/IconButton";
 import { IconDotsVertical } from "@tabler/icons-react";
 import { useQuery } from 'react-query';
 import { useAtom, useSetAtom } from 'jotai';

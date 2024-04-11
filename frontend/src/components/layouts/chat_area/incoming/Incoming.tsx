@@ -28,7 +28,7 @@ export const Incoming: React.FC<IncomingProps> = ({ chatData }) => {
                     {chatData.reply ? <IncomingReplyHeader reply={chatData.reply} /> : null}
 
                     <div className="flex flex-col w-full">
-                        
+
                         {!chatData.reply_to ? <p className="text-xs text-start mb-[-5px] pl-1 opacity-80">{chatData.user?.username}</p> : null}
 
                         <div className="flex w-full space-x-1 items-center mt-2 group">
@@ -37,8 +37,8 @@ export const Incoming: React.FC<IncomingProps> = ({ chatData }) => {
                                     {chatData.message}
                                 </p>
 
-                                {chatData.reaction.length !== 0 ?
-                                    <ChatReactions classes="left-0 mt-1.5" />
+                                {(chatData.reaction.length !== 0 && !chatData.has_attachment) ?
+                                    <ChatReactions classes="left-0 mt-1.5" reactions={chatData.reaction} />
                                     : null
                                 }
                             </div>
@@ -47,6 +47,7 @@ export const Incoming: React.FC<IncomingProps> = ({ chatData }) => {
                                 <Buttons
                                     chat_id={chatData.chat_id}
                                     message={chatData.message}
+                                    reactions={chatData.reaction}
                                 />
                                 : null
                             }

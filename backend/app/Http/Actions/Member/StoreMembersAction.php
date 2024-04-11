@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Actions\Chat;
+namespace App\Http\Actions\Member;
 
 use App\Models\Member;
 
