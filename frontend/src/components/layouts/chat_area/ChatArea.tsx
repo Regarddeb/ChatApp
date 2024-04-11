@@ -9,11 +9,13 @@ import { Outgoing } from "./outgoing/Outgoing";
 import { ChatLoading } from "@sharedComponents/loader/ChatLoading";
 import { NoChat } from "@sharedComponents/feedback/NoChat";
 import { ChatData } from "@type/chat";
-import { memberAtom } from "@atoms/chatAtoms";
+import { memberAtom, replyToChatAtom } from "@atoms/chatAtoms";
+import { replyToInitial } from "@type/replyToChat";
 
 export const ChatArea: React.FC = () => {
     const thread_id = useAtomValue(threadAtom);
     const setMemberID = useSetAtom(memberAtom);
+    const setReplyTo = useSetAtom(replyToChatAtom);
 
     const debounce = (func: Function, delay: number) => {
         let timeoutId: ReturnType<typeof setTimeout>;
@@ -49,6 +51,7 @@ export const ChatArea: React.FC = () => {
     useEffect(() => {
         if (data && data.pages.length > 0) {
             setMemberID(data.pages[0].chats.data[0].thread.member[0].member_id);
+            setReplyTo(replyToInitial);
         }
     }, [data, setMemberID]);
 

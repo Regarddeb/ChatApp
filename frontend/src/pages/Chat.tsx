@@ -14,11 +14,14 @@ import { ThreadHeader } from "@sharedComponents/partials/ThreadHeader";
 import { NoThread } from "@sharedComponents/feedback/NoThread";
 import { useAtom, useAtomValue } from "jotai";
 import { Profile } from '@layouts/profile/Profile';
+import { ReplyTo } from "@components/layouts/input_area/ReplyTo";
+import { replyToChatAtom } from "@atoms/chatAtoms";
 
 export default function Chat() {
     const [currentTab] = useAtom(currentTabAtom);
     const [selectedUser] = useAtom(selectedUserAtom);
     const thread = useAtomValue(threadAtom);
+    const replyTo = useAtomValue(replyToChatAtom);
 
     return (
         <Container>
@@ -48,7 +51,10 @@ export default function Chat() {
                         <NoThread />
                     }
 
-                    <InputArea />
+                    <div className="w-full">
+                        {replyTo.chat_id !== 0 ? <ReplyTo /> : null}
+                        <InputArea />
+                    </div>
 
                 </div>
 

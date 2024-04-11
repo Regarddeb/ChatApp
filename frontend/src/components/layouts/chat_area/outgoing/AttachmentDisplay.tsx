@@ -1,18 +1,27 @@
-import { Attachment, Reaction } from "@type/chat"
 import { Buttons } from "../Buttons"
 import { ChatReactions } from "../reaction/ChatReactions"
+import { AttachmentProps } from "@type/attachmentProps"
 
-interface AttachmentProps {
-    attachment: Attachment
-    chat_id: number
-    message: string
-    reactions: Reaction[]
-}
-
-export const AttachmentDisplay: React.FC<AttachmentProps> = ({ attachment, chat_id, message, reactions }) => {
+export const AttachmentDisplay: React.FC<AttachmentProps> = (
+    {
+        attachment,
+        chat_id,
+        message,
+        reactions,
+        user_id,
+        username
+    }
+) => {
     return (
         <div className="flex items-center">
-            <Buttons chat_id={chat_id} message={message} reactions={reactions} />
+            <Buttons
+                chat_id={chat_id}
+                message={message}
+                reactions={reactions}
+                has_attachment={1}
+                user_id={user_id}
+                username={username}
+            />
 
             <div className="relative">
                 <img

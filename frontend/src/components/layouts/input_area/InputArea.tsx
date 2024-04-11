@@ -66,7 +66,7 @@ export const InputArea: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit(handleChatSubmit)} className="w-full py-2 px-0.5 flex items-center space-x-2 truncate text-ellipsis">
-
+            
             <AttachmentSelector setAttachment={setAttachment} attachment={attachment} />
 
             <Controller

@@ -4,7 +4,7 @@ import { User } from './userTypes'
 interface ChatBase {
   chat_id: number
   message: string
-  has_attachment: boolean
+  has_attachment: number
   user_id: number
   thread_id: number
   reply_to: null | number

@@ -1,21 +1,22 @@
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { ChatIconButton } from "@sharedComponents/button/ChatIconButton";
 import { ReactionMenu } from "./reaction/ReactionMenu";
-import { Reaction } from "@type/chat";
+import { ButtonsProps } from "@type/buttonsProps";
+import { replyToChatAtom } from "@atoms/chatAtoms";
+import { useSetAtom } from "jotai";
 
-interface ButtonsProps {
-    chat_id: number;
-    message: string;
-    reactions: Reaction[]
-}
-
-export const Buttons: React.FC<ButtonsProps> = ({ chat_id, message, reactions }) => {
+export const Buttons: React.FC<ButtonsProps> = ({ chat_id, message, reactions, has_attachment, user_id, username }) => {
+    const setReplyTo = useSetAtom(replyToChatAtom);
 
     const handleReplyClick = () => {
-        console.log(chat_id, message);
+        setReplyTo({
+            chat_id: chat_id,
+            user_id: user_id,
+            message: message,
+            has_attachment: has_attachment,
+            username: username
+        })
     };
-
-    
 
     return (
         <div className="space-x-2 flex pr-2 opacity-0 group-hover:opacity-100">
