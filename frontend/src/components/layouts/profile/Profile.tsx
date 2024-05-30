@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core"
-import { useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from "react-router-dom";
 
 import { DisplayPic } from "./DisplayPic";
@@ -18,20 +18,25 @@ export const Profile: React.FC = () => {
     const navigate = useNavigate();
     const user = useAtomValue(userAtom);
 
-    const handleLogout = () => {
-        axios.patch('api/user/logout')
-            .then((res) => {
-                queryClient.invalidateQueries();
+    const mutation = useMutation({
+        mutationKey: ['logout'],
+        mutationFn: () => axios.patch('api/user/logout'),
+        onSuccess: (res: any) => {
+             queryClient.invalidateQueries();
                 navigate('/');
                 Toast({ icon: 'success', title: res.data.message });
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 setSelectedUser([UserInitial]);
                 setThread(null);
-            })
-            .catch(() => {
-                Toast({ icon: 'error', title: 'Logout Failed' });
-            });
+        },
+        onError: () => {
+            Toast({ icon: 'error', title: 'Logout Failed' });
+        }
+    })
+
+    const handleLogout = () => {
+        mutation.mutate();
     }
 
     return (

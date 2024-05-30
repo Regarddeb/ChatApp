@@ -33,17 +33,16 @@ export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
             onClick={() => handleThreadClick()}
             className={`w-full relative hover:bg-secondary hover:bg-opacity-40 hover:shadow-sm group hover:cursor-pointer p-2 pl-3 flex items-center rounded-md ${!seen ? 'font-medium' : ''}`}
         >
-
             <div className="w-2/12">
                 <div
                     style={{
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        backgroundImage: thread.member[0].user?.display_picture_path ?
-                            `url(${import.meta.env.VITE_API_URL}/storage/${thread.member[0].user?.display_picture_path})` :
+                        backgroundImage: user.display_picture_path ?
+                            `url(${import.meta.env.VITE_API_URL}/storage/${user.display_picture_path})` :
                             `url(${no_dp})`
                     }}
-                    className={`bg-gray-100 rounded-full w-[50px] h-[48px] border-2 ${threadActive ? 'ring ring-offset-2 ring-green-500' : 'border-transparent'}`}
+                    className={`rounded-full bg-gray-300 w-[40px] h-[40px] ${threadActive ? 'ring ring-offset-2 ring-green-500' : ''}`}
                 >
                 </div>
             </div>
@@ -51,11 +50,9 @@ export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
             <div className="flex pl-3 flex-col w-full truncate space-y-1 text-ellipsis py-1 mr-1">
 
                 <p className="text-sm text-start">
-                    {
-                        thread.user.map((user: User) => (
-                            user.username
-                        ))
-                    }
+                    {thread.user.map((user: User) => (
+                        user.username
+                    ))}
                 </p>
 
                 <div className={`text-[12px] font-light opacity-70 relative text-start ${!seen ? 'font-medium' : ''}`}>
@@ -65,7 +62,7 @@ export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
                         {thread.latest_chat.has_attachment ? 'Sent a photo' : thread.latest_chat.message}
                     </p>
 
-                    <span className={`z-10 text-[10px] absolute right-0 bottom-0 bg-white pt-[2px] pl-[7px] group-hover:hidden`}>
+                    <span className={`z-10 text-[10px] absolute right-0 bottom-0 bg-white pt-[2px] pl-[7px] opacity-100 group-hover:opacity-0`}>
                         {calculateTimeDifference(thread.latest_chat.created_at)}
                     </span>
 
@@ -73,7 +70,7 @@ export const ChatInstance: React.FC<ChatInstanceProps> = ({ thread }) => {
 
             </div>
 
-            <div className="w-1/12 pt-1 hidden group-hover:flex">
+            <div className="w-1/12 pt-1 opacity-0 group-hover:opacity-100 absolute right-2">
                 <IconButton icon={<IconDotsVertical size={18} style={{ opacity: 0.7 }} />} className='group-hover:border p-1 mr-[-10px] hover:bg-white' />
             </div>
 

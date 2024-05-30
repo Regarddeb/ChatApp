@@ -15,16 +15,14 @@ import { EmptyResult } from "@sharedComponents/feedback/EmptyResult";
 export const UserList: React.FC = () => {
     const [searchTerm,] = useAtom(searchTermAtom);
 
-    const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-        ['userList', searchTerm],
-        async ({ pageParam = 1 }) => {
+    const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+        queryKey: ['userList', searchTerm],
+        queryFn: async ({ pageParam = 1 }) => {
             const response = await axios.get(`/api/user/all-users?page=${pageParam}&search=${searchTerm}`);
             return response.data;
         },
-        {
-            getNextPageParam: (lastPage) => lastPage.users.next_page_url ? lastPage.users.current_page + 1 : undefined,
-        }
-    );
+        getNextPageParam: (lastPage) => lastPage.users.next_page_url ? lastPage.users.current_page + 1 : undefined,
+    });
 
     return (
         <>

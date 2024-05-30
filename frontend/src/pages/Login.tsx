@@ -30,28 +30,26 @@ export default function Login() {
         }
     });
 
-    const mutation = useMutation(
-        (data: LoginValues) => axios.post('api/user/login', data),
-        {
-            onSuccess: (res) => {
-                const { token, user } = res.data.user.original;
-                localStorage.setItem('token', token);
-                setUser(user);
-                Toast({ icon: 'success', title: 'Signed in successfully' });
-                navigate('/chat');
-            },
-            onError: (err: any) => {
-                if (axios.isAxiosError(err) && err.response?.status === 422) {
-                    Toast({ icon: 'error', title: err.response.data.message });
-                } else if (axios.isAxiosError(err) && err.response?.status === 401) {
-                    Toast({ icon: 'error', title: err.response.data.error });
-                } else {
-                    Toast({ icon: 'error', title: 'Something went wrong' });
-                }
-                console.error('An error occurred:', err.message);
+    const mutation = useMutation({
+        mutationKey: ['login'],
+        mutationFn: (data: LoginValues) => axios.post('api/user/login', data),
+        onSuccess: (res) => {
+            const { token, user } = res.data.user.original;
+            localStorage.setItem('token', token);
+            setUser(user);
+            Toast({ icon: 'success', title: 'Signed in successfully' });
+            navigate('/chat');
+        },
+        onError: (err: any) => {
+            if (axios.isAxiosError(err) && err.response?.status === 422) {
+                Toast({ icon: 'error', title: err.response.data.message });
+            } else if (axios.isAxiosError(err) && err.response?.status === 401) {
+                Toast({ icon: 'error', title: err.response.data.error });
+            } else {
+                Toast({ icon: 'error', title: 'Something went wrong' });
             }
         }
-    );
+    });
 
     const handleLoginSubmit: SubmitHandler<LoginValues> = data => {
         if (loginSchema.parse(data)) {
@@ -139,6 +137,7 @@ export default function Login() {
                         >
                             Log in
                         </Button>
+
                         <Link to="signup" className='w-8/12'>
                             <Button
                                 variant="subtle"

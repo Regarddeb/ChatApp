@@ -21,8 +21,9 @@ class ChatController extends Controller
             $message = $request->input('message');
             $attachment = $request->file('attachment');
             $thread_id = $request->input('thread_id');
+            $reply_to = $request->input('reply_to');
 
-            $storeChatAction = new StoreChatAction($message, $thread_id, $attachment, $user_id);
+            $storeChatAction = new StoreChatAction($message, $thread_id, $attachment, $user_id, $reply_to);
             $chat = $storeChatAction->execute();
 
             return response()->json(['chat' => $chat]);

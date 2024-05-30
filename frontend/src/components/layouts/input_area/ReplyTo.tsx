@@ -14,8 +14,8 @@ export const ReplyTo: React.FC = () => {
     }
 
     return (
-        <div className="w-full flex justify-between border-y px-3 py-3">
-            <div className="flex flex-col text-start max-w-[50%] space-y-1">
+        <div className="w-full relative border-y px-3 py-3">
+            <div className="flex flex-col text-start space-y-1">
                 <p className="text-xs font-semibold truncate space-x-1 flex items-center">
                     {replyToChat.has_attachment ? <IconPaperclip size={15} /> : null}
                     <span>Replying to {replyToChat.username ? replyToChat.username : ' yourself'}</span>
@@ -24,7 +24,7 @@ export const ReplyTo: React.FC = () => {
                 <p className="text-xs truncate">{replyToChat.message}</p>
             </div>
 
-            <div className="h-fit mt-[-5px] mr-[-5px]">
+            <div className="h-fit mt-[-5px] mr-[-5px] absolute right-1.5 top-1.5">
                 <IconButton
                     icon={<IconX size={17} />}
                     className="p-1.5"

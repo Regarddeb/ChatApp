@@ -18,7 +18,8 @@ export default defineConfig({
       "@utilities": path.resolve(__dirname, "src/utilities"),
       "@atoms": path.resolve(__dirname, "src/atoms"),
       "@sharedComponents": path.resolve(__dirname, "src/sharedComponents"),
-      "@type": path.resolve(__dirname, "src/type")
+      "@type": path.resolve(__dirname, "src/type"),
+      "@queries": path.resolve(__dirname, "src/queries")
     },
   },
 });

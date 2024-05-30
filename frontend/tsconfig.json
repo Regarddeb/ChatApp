@@ -30,7 +30,8 @@
       "@utilities/*": ["utilities/*"],
       "@atoms/*": ["atoms/*"],
       "@sharedComponents/*": ["sharedComponents/*"],
-      "@type/*": ["type/*"]
+      "@type/*": ["type/*"],
+      "@queries/*": ["queries/*"]
     }
   },
   "include": ["src"],

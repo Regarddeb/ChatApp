@@ -33,7 +33,7 @@ export const SearchInput = () => {
                 onFocus={handleSearchFocus}
                 value={searchHistoryTerm}
                 placeholder="Search chat history"
-                variant="filled"
+                variant={`${searchHistoryActive ? 'default' : 'filled'}`}
                 className='w-full'
                 leftSection={<IconSearch size={19} />}
             />

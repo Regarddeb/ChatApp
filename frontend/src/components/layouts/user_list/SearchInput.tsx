@@ -32,7 +32,9 @@ export const SearchInput = () => {
                 onFocus={handleUserSearchFocus}
                 onChange={handleSearchChange}
                 value={searchTerm}
-                placeholder="Search chat history" variant="filled" className='w-full'
+                placeholder="Search chat history"
+                variant={`${userSearchActive ? 'default' : 'filled'}`}
+                className='w-full'
                 leftSection={<IconSearch size={19} />}
             />
         </div>

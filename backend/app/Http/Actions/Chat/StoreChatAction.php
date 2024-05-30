@@ -10,13 +10,14 @@ use App\Models\Chat;
 
 class StoreChatAction
 {
-    public $message, $thread_id, $attachment, $user_id;
-    public function __construct($message, $thread_id, $attachment, $user_id)
+    public $message, $thread_id, $attachment, $user_id, $reply_to;
+    public function __construct($message, $thread_id, $attachment, $user_id, $reply_to)
     {
         $this->user_id = $user_id;
         $this->message = $message;
         $this->thread_id = $thread_id;
         $this->attachment = $attachment;
+        $this->reply_to = $reply_to;
     }
 
     public function execute()
@@ -25,6 +26,7 @@ class StoreChatAction
         $message = $this->message;
         $thread_id = $this->thread_id;
         $attachment = $this->attachment;
+        $reply_to = $this->reply_to;
         $myMemberID = 0;
 
         if (!$thread_id) {
@@ -40,7 +42,7 @@ class StoreChatAction
             'has_attachment' => !$attachment ? 0 : 1,
             'user_id' => auth()->id(),
             'thread_id' => $thread_id,
-            'reply_to' => null
+            'reply_to' => $reply_to
         ]);
 
         if ($attachment) {

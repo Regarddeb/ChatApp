@@ -50,7 +50,7 @@ class User extends Authenticatable
 
     public function member(): HasMany
     {
-        return $this->hasMany(Member::class, 'id');
+        return $this->hasMany(Member::class, 'member_id');
     }
 
     public function chat(): HasMany
@@ -62,6 +62,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread_Deleted_By::class, 'id');
     }
-
-    
 }

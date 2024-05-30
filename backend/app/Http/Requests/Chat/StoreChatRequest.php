@@ -27,6 +27,7 @@ class StoreChatRequest extends FormRequest
             'thread_id' => 'nullable|integer',
             'user_id' => 'nullable|integer',
             'attachment' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'reply_to' => 'nullable|integer'
         ];
     }
 }

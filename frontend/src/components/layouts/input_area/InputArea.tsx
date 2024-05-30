@@ -7,17 +7,21 @@ import { useAtom, useAtomValue } from 'jotai';
 import axios from '@utilities/axios';
 import { useMutation } from 'react-query';
 
-import { IconButton } from "@sharedComponents/button/IconButton";
-import { selectedUserAtom, threadAtom } from '@atoms/chatAtoms';
-import chatInput from '@type/chatInput';
+import { selectedUserAtom, threadAtom, replyToChatAtom } from '@atoms/chatAtoms';
 import { chatInputSchema } from '@type/chatInput';
+import chatInput from '@type/chatInput';
+import { IconButton } from "@sharedComponents/button/IconButton";
 import { AttachmentName } from './AttachmentName';
 import { AttachmentSelector } from './AttachmentSelector';
+import { replyToInitial } from '@type/replyToChat';
+import { useAllChatsQuery } from '@queries/chats/allChatsQuery';
 
 export const InputArea: React.FC = () => {
     const selectedUser = useAtomValue(selectedUserAtom);
-    const [thread, setThread] = useAtom(threadAtom);
+    const [thread] = useAtom(threadAtom);
     const [attachment, setAttachment] = useState<File | null>(null);
+    const [replyToChat, setReplyTo] = useAtom(replyToChatAtom);
+    const { refetch: refetchThreadChats } = useAllChatsQuery();
 
     const { control, formState: { errors }, handleSubmit, setValue } = useForm<chatInput>({
         resolver: zodResolver(chatInputSchema),
@@ -26,9 +30,21 @@ export const InputArea: React.FC = () => {
         }
     });
 
-    const mutation = useMutation((chat: FormData) =>
-        axios.post('api/chat/send', chat)
-    );
+    const mutation = useMutation({
+        mutationKey: ['sendChat'],
+        mutationFn: (chat: FormData) => (
+            axios.post('api/chat/send', chat)
+        ),
+        onSuccess: () => {
+            refetchThreadChats();
+            setValue('message', '');
+            setAttachment(null);
+            setReplyTo(replyToInitial);
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+    });
 
     const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && !event.shiftKey && !mutation.isLoading) {
@@ -40,7 +56,6 @@ export const InputArea: React.FC = () => {
     const handleChatSubmit: SubmitHandler<chatInput> = data => {
         if (chatInputSchema.parse(data)) {
             const formData = new FormData();
-
             formData.append('message', data.message);
 
             if (attachment) {
@@ -49,24 +64,18 @@ export const InputArea: React.FC = () => {
             if (!thread) {
                 formData.append('user_id', selectedUser[0].id.toString());
             }
+            if (replyToChat.chat_id) {
+                formData.append('reply_to', replyToChat.chat_id.toString())
+            }
             formData.append('thread_id', (thread ?? 0).toString());
 
-            mutation.mutate(formData, {
-                onSuccess: (res) => {
-                    setThread(res.data.chat.thread_id);
-                    setValue('message', '');
-                    setAttachment(null);
-                },
-                onError: (err) => {
-                    console.log(err);
-                },
-            });
+            mutation.mutate(formData);
         }
     };
 
     return (
         <form onSubmit={handleSubmit(handleChatSubmit)} className="w-full py-2 px-0.5 flex items-center space-x-2 truncate text-ellipsis">
-            
+
             <AttachmentSelector setAttachment={setAttachment} attachment={attachment} />
 
             <Controller

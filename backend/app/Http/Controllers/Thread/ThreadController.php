@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Thread;
 use App\Models\Chat;
-use App\Http\Requests\Thread\AllChatsRequest;
-use App\Http\Requests\Thread\ThreadWithRequest;
+use App\Models\Seen_By;
 
 class ThreadController extends Controller
 {
@@ -68,19 +67,20 @@ class ThreadController extends Controller
         $chats = Chat::with([
             'attachment',
             'seenBy',
-            'reply.user.member',
+            'reply.user',
             'user' => function ($query) {
                 $query->whereNot('id', auth()->id());
             },
             'reaction'
         ])
-            ->with(['thread.member' => function ($query) { {
-                    $query->where('user_id', auth()->id());
-                }
+            ->with(['thread.member' => function ($query) {
+                $query->where('user_id', auth()->id());
             }])
             ->where('thread_id', $thread_id)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
+        
+        
 
         return response()->json(['chats' => $chats], 200);
     }

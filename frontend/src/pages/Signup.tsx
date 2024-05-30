@@ -2,13 +2,12 @@ import { IconAt, IconLock, IconUser } from '@tabler/icons-react';
 import { Input, PasswordInput, Button } from '@mantine/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useAtom } from 'jotai';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
 import { z } from 'zod';
 
 import axios from '@utilities/axios';
-import { useAtom } from 'jotai';
 import Container from "@sharedComponents/layout/Container";
 import SignupMessage from '@sharedComponents/misc/SignupMessage';
 import Front from '@sharedComponents/misc/Front';
@@ -33,29 +32,28 @@ export default function Signup() {
         }
     });
 
-    const mutation = useMutation(
-        (data: FormValues) => axios.post('api/user/store', signupSchema.parse(data)),
-        {
-            onSuccess: (res) => {
-                const { token, user } = res.data.userData.original;
-                localStorage.setItem('token', token);
-                setUser(user);
-                Toast({ icon: 'success', title: 'Signed in successfully' });
-                navigate('/chat');
-            },
-            onError: (err: any) => {
-                if (axios.isAxiosError(err) && err.response?.status === 422) {
-                    setError('email', {
-                        type: 'manual',
-                        message: err.response.data.message,
-                    });
-                } else {
-                    Toast({ icon: 'error', title: 'Something went wrong' });
-                    console.error('An error occurred:', err.message);
-                }
+    const mutation = useMutation({
+        mutationKey: ['signup'],
+        mutationFn: (data: FormValues) => axios.post('api/user/store', signupSchema.parse(data)),
+        onSuccess: (res) => {
+            const { token, user } = res.data.userData.original;
+            localStorage.setItem('token', token);
+            setUser(user);
+            Toast({ icon: 'success', title: 'Signed in successfully' });
+            navigate('/chat');
+        },
+        onError: (err: any) => {
+            if (axios.isAxiosError(err) && err.response?.status === 422) {
+                setError('email', {
+                    type: 'manual',
+                    message: err.response.data.message,
+                });
+            } else {
+                Toast({ icon: 'error', title: 'Something went wrong' });
+                console.error('An error occurred:', err.message);
             }
         }
-    );
+    });
 
     const SignupSubmit: SubmitHandler<FormValues> = (data) => {
         mutation.mutate(data);

@@ -17,16 +17,14 @@ export const ChatHistory: React.FC = () => {
     const searchHistoryActive = useAtomValue(searchChatHistoryActiveAtom);
     const searchHistoryTerm = useAtomValue(searchChatHistoryTermAtom);
 
-    const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery(
-        ['chatHistoryList', searchHistoryTerm],
-        async ({ pageParam = 1 }) => {
+    const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+        queryKey: ['chatHistoryList', searchHistoryTerm],
+        queryFn: async ({ pageParam = 1 }) => {
             const response = await axios.get(`/api/thread/all-threads?page=${pageParam}&search=${searchHistoryTerm}`);
             return response.data;
         },
-        {
-            getNextPageParam: (lastPage) => lastPage.threads.next_page_url ? lastPage.threads.current_page + 1 : undefined,
-        }
-    );
+        getNextPageParam: (lastPage) => lastPage.threads.next_page_url ? lastPage.threads.current_page + 1 : undefined,
+    });
 
     return (
         <>

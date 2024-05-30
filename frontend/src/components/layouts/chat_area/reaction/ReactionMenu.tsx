@@ -11,6 +11,7 @@ import { threadAtom } from "@atoms/chatAtoms";
 import { useAtomValue } from "jotai";
 import { Reaction } from "@type/chat";
 import { memberAtom } from "@atoms/chatAtoms";
+import { useAllChatsQuery } from "@queries/chats/allChatsQuery";
 
 interface ReactionMenuProps {
     chat_id: number
@@ -28,6 +29,7 @@ export const ReactionMenu: React.FC<ReactionMenuProps> = ({ chat_id, reactions }
     const [closeOnClickOutside, setCloseOnClickOutside] = useState<boolean>(true);
     const thread_id = useAtomValue(threadAtom);
     const member_id = useAtomValue(memberAtom);
+    const { refetch } = useAllChatsQuery();
 
     const handleManualCloseMenu = () => {
         if (closeOnClickOutside) {
@@ -42,17 +44,20 @@ export const ReactionMenu: React.FC<ReactionMenuProps> = ({ chat_id, reactions }
             thread_id: thread_id
         }
 
-        mutation.mutate(reaction, {
-            onSuccess: () => {
-
-            },
-            onError: () => {
-
-            }
-        })
+        mutation.mutate(reaction)
     }
 
-    const mutation = useMutation((reaction: ReactionType) => axios.post('api/chat/react', reaction));
+    const mutation = useMutation({
+        mutationKey: ['reactToChat'],
+        mutationFn: (reaction: ReactionType) => axios.post('api/chat/react', reaction),
+        onSuccess: () => {
+            refetch();
+        },
+        onError: err => {
+            console.log(err)
+        }
+    });
+
     const myReaction = reactions.find(reaction => member_id === reaction.member_id)
     const reactionOptions = ['2764-fe0f', '1f606', '1f62e', '1f625', '1f620', '1f44d']
 
