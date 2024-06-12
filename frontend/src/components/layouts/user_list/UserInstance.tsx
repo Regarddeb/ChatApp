@@ -26,7 +26,7 @@ export const UserInstance: React.FC<UserInstanceProps> = ({ user }) => {
             return response.data;
         },
         onSuccess: () => {
-            setThread(data.threads.length > 0 ? data.threads[0].thread_id : null);
+            setThread(data.threads?.length > 0 ? data.threads[0]?.thread_id : null);
         },
         onError: err => {
             console.log(err)

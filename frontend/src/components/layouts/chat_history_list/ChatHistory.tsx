@@ -1,21 +1,23 @@
 import React from "react";
 import { IconSquarePlus } from "@tabler/icons-react";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useInfiniteQuery } from "react-query";
 
 import axios from "@utilities/axios";
 import { ChatInstance } from "./ChatInstance";
 import { MenuLoading } from "@sharedComponents/loader/MenuLoading";
 import { IconButton } from '@sharedComponents/button/IconButton';
-import { searchChatHistoryActiveAtom } from '@atoms/menuAtoms';
-import { searchChatHistoryTermAtom } from '@atoms/chatHistoryAtoms';
 import { SearchInput } from "./SearchInput";
 import { EmptyResult } from "@sharedComponents/feedback/EmptyResult";
 import { Thread } from "@type/chatHistory";
+import { searchChatHistoryActiveAtom } from '@atoms/menuAtoms';
+import { searchChatHistoryTermAtom } from '@atoms/chatHistoryAtoms';
+import { newChatToggledAtom } from "@atoms/newChatAtom";
 
 export const ChatHistory: React.FC = () => {
     const searchHistoryActive = useAtomValue(searchChatHistoryActiveAtom);
     const searchHistoryTerm = useAtomValue(searchChatHistoryTermAtom);
+    const setNewChatToggled = useSetAtom(newChatToggledAtom);
 
     const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery({
         queryKey: ['chatHistoryList', searchHistoryTerm],
@@ -32,7 +34,7 @@ export const ChatHistory: React.FC = () => {
                 <p className="py-1 pl-1 text-start flex space-x-2 items-center">
                     <span className="font-medium">Messages</span>
                 </p>
-                <IconButton icon={<IconSquarePlus size={20} />} className='p-1.5' />
+                <IconButton icon={<IconSquarePlus size={20} />} className='p-1.5' onClick={() => setNewChatToggled(true)} />
             </div>
 
             <SearchInput />

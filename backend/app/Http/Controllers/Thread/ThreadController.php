@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Thread;
 use App\Models\Chat;
-use App\Models\Seen_By;
 
 class ThreadController extends Controller
 {
@@ -80,8 +79,6 @@ class ThreadController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
         
-        
-
         return response()->json(['chats' => $chats], 200);
     }
 }
