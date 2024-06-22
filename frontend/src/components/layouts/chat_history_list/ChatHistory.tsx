@@ -1,32 +1,18 @@
 import React from "react";
-import { IconSquarePlus } from "@tabler/icons-react";
-import { useAtomValue, useSetAtom } from "jotai";
-import { useInfiniteQuery } from "react-query";
+import { useAtomValue } from "jotai";
 
-import axios from "@utilities/axios";
 import { ChatInstance } from "./ChatInstance";
 import { MenuLoading } from "@sharedComponents/loader/MenuLoading";
-import { IconButton } from '@sharedComponents/button/IconButton';
 import { SearchInput } from "./SearchInput";
 import { EmptyResult } from "@sharedComponents/feedback/EmptyResult";
 import { Thread } from "@type/chatHistory";
 import { searchChatHistoryActiveAtom } from '@atoms/menuAtoms';
-import { searchChatHistoryTermAtom } from '@atoms/chatHistoryAtoms';
-import { newChatToggledAtom } from "@atoms/newChatAtom";
+import useAllThreadsQuery from "@queries/threads/allThreadsQuery";
+
 
 export const ChatHistory: React.FC = () => {
     const searchHistoryActive = useAtomValue(searchChatHistoryActiveAtom);
-    const searchHistoryTerm = useAtomValue(searchChatHistoryTermAtom);
-    const setNewChatToggled = useSetAtom(newChatToggledAtom);
-
-    const { isLoading, data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-        queryKey: ['chatHistoryList', searchHistoryTerm],
-        queryFn: async ({ pageParam = 1 }) => {
-            const response = await axios.get(`/api/thread/all-threads?page=${pageParam}&search=${searchHistoryTerm}`);
-            return response.data;
-        },
-        getNextPageParam: (lastPage) => lastPage.threads.next_page_url ? lastPage.threads.current_page + 1 : undefined,
-    });
+    const { isLoading, data, fetchNextPage, hasNextPage } = useAllThreadsQuery();
 
     return (
         <>
@@ -34,7 +20,7 @@ export const ChatHistory: React.FC = () => {
                 <p className="py-1 pl-1 text-start flex space-x-2 items-center">
                     <span className="font-medium">Messages</span>
                 </p>
-                <IconButton icon={<IconSquarePlus size={20} />} className='p-1.5' onClick={() => setNewChatToggled(true)} />
+
             </div>
 
             <SearchInput />

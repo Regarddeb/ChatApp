@@ -15,6 +15,7 @@ import { AttachmentName } from './AttachmentName';
 import { AttachmentSelector } from './AttachmentSelector';
 import { replyToInitial } from '@type/replyToChat';
 import { useAllChatsQuery } from '@queries/chats/allChatsQuery';
+import useAllThreadsQuery from '@queries/threads/allThreadsQuery';
 
 export const InputArea: React.FC = () => {
     const selectedUser = useAtomValue(selectedUserAtom);
@@ -22,6 +23,7 @@ export const InputArea: React.FC = () => {
     const [attachment, setAttachment] = useState<File | null>(null);
     const [replyToChat, setReplyTo] = useAtom(replyToChatAtom);
     const { refetch: refetchThreadChats } = useAllChatsQuery();
+    const { refetch: refetchAllThreads } = useAllThreadsQuery();
 
     const { control, formState: { errors }, handleSubmit, setValue } = useForm<chatInput>({
         resolver: zodResolver(chatInputSchema),
@@ -40,6 +42,7 @@ export const InputArea: React.FC = () => {
             setValue('message', '');
             setAttachment(null);
             setReplyTo(replyToInitial);
+            refetchAllThreads();
         },
         onError: (err) => {
             console.log(err);
