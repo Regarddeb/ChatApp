@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\Thread;
 use App\Models\Chat;
 
+use App\Http\Actions\Thread\MarkThreadSeenAction;
+
 class ThreadController extends Controller
 {
     public function index(Request $request): JsonResponse
@@ -78,6 +80,9 @@ class ThreadController extends Controller
             ->where('thread_id', $thread_id)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
+        
+        $markThreadSeenAction = new MarkThreadSeenAction($thread_id);
+        $markThreadSeenAction->execute();
         
         return response()->json(['chats' => $chats], 200);
     }
